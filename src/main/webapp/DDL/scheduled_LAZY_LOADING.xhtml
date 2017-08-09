@@ -1,0 +1,168 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Inventory Control</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+    </h:head>
+    <h:body>
+        <h:outputStylesheet library="itr" name="css/index.css"/>
+        <h:outputStylesheet library="itr" name="css/scheduled.css"/>
+
+        <ui:remove>
+            #{facesContext.externalContext.applicationContextPath} 
+            #{request.contextPath}
+        </ui:remove>
+        <ui:debug hotkey="x" rendered="#{facesContext.application.projectStage == 'Development'}" />
+
+        <ui:decorate template="../template/layout.xhtml">
+            <ui:param name="title" value="true"/>
+            <ui:param name="subtitle" value="false"/>  
+            <ui:param name="mainheader" value="false"/>
+            <ui:param name="topmenu" value="false"/>
+            <ui:param name="leftpanel" value="true"/>
+            <ui:param name="rightpanel" value="false"/>  
+            <ui:param name="centerpanel" value="true"/>
+            <ui:param name="mainfooter" value="true"/> 
+
+            <ui:define name="title">
+                <div class="subcontainers title">
+                    <p:graphicImage styleClass="brandImage" library="itr" name="images/itr1.jpg"/>
+                </div>
+            </ui:define>
+
+            <ui:define name="centerpanel">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                    <p:graphicImage library="itr" name="images/ajax-loading.gif" />
+                </p:dialog>
+
+                <div id="actDiv">
+                    <h:panelGrid columns="2">
+                        <h:form prependId="false" enctype="multipart/form-data">
+                            <p:growl id="messages" showDetail="true"/>
+                            <p:toolbar>
+                                <f:facet name="left">
+                                    <h:panelGrid columns="4">
+                                        <p:menuButton id="createListBtn" value="Create listing">
+                                            <p:menuitem value="Single listing" actionListener="#{menuView.save}" update="messages" icon="ui-icon-disk"/>
+                                        </p:menuButton>
+                                        <span class="ui-separator">
+                                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                        </span>
+                                        <!--file upload-->
+                                        <p:fileUpload id="up-fileInp" fileUploadListener="#{proformaFileHandlerBean.uploadProforma}" 
+                                                      mode="advanced" multiple="true" 
+                                                      update="messages" sizeLimit="2097152" fileLimit="300" allowTypes="/(\.|\/)(xls|xlsx)$/"  
+                                                      dragDropSupport="true"/>
+                                        <span class="ui-separator">
+                                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                        </span>
+                                    </h:panelGrid>
+                                </f:facet>
+                            </p:toolbar>
+                        </h:form>
+                        <h:form>
+                            <!--process proforma invoice-->
+                            <p:commandButton value="Process"
+                                             action="#{proformaFileHandlerBean.processProforma}" 
+                                             icon="fa-cart-arrow-down" />
+                        </h:form>
+                    </h:panelGrid>
+
+                    <div class="subcontainers centralpanel">
+                        <h:form id="productTableForm">
+                            <p:dataTable value="#{lazyLoadProductBean.lazyModel}" var="product" widgetVar="productTable" lazy="true"
+                                         paginator="true" rows="2" paginatorTemplate="{CurrentPageReport} {FirstPageLink} 
+                                         {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="2,3,4" first="0" selectionMode="single" selection="#{lazyLoadProductBean.product}" 
+                                         emptyMessage="No product found with given criteria" filteredValue="#{lazyLoadProductBean.filteredProducts}">
+
+                                <f:facet name="header">
+                                    <p:outputPanel id="globalFilterPanel">
+                                        <h:outputText value="Search all fields:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('productTable').filter()" placeholder="Enter keyword"/>
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:ajax event="rowSelect" listener="#{lazyLoadProductBean.onRowSelect}" update=":productTableForm:productDetail" 
+                                        oncomplete="PF('productDialog').show()" />
+
+                                <p:column headerText="Image">
+                                    <h:commandLink>
+                                        <p:graphicImage id="image" value="#{product.imgUrl}"/>                                    
+                                    </h:commandLink>
+                                </p:column>
+                                <p:column headerText="UPC" filterBy="#{product.upc}" sortBy="#{product.upc}" 
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{product.upc}" />
+                                </p:column>
+                                <p:column headerText="Description" filterBy="#{product.productDescription}" 
+                                          sortBy="#{product.productDescription}" filterMatchMode="contains">
+                                    <h:outputText value="#{product.productDescription}" />
+                                </p:column>
+                                <p:column headerText="Category" filterBy="#{product.categoryFull}" 
+                                          sortBy="#{product.categoryFull}" filterMatchMode="contains">
+                                    <h:outputText value="#{product.categoryFull}" />
+                                </p:column>
+                                <p:column headerText="Bin" filterBy="#{product.binLocation}" sortBy="#{product.binLocation}" 
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{product.binLocation}" />
+                                </p:column>
+                                <p:column headerText="Quantity" sortBy="#{product.totalQty}" filterMatchMode="contains">
+                                    <h:outputText value="#{product.totalQty}" />
+                                </p:column>
+                                <p:column headerText="Store" filterBy="#{product.storeLocation}" sortBy="#{product.storeLocation}" 
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{product.storeLocation}" />
+                                </p:column>
+                                <p:column headerText="Price" sortBy="#{product.salePrice}" filterMatchMode="contains">
+                                    <h:outputText value="#{product.salePrice}" />
+                                </p:column>
+                                <p:column headerText="Product Id" filterBy="#{product.productId}" sortBy="#{product.productId}" 
+                                          filterMatchMode="contains">
+                                    <h:outputText value="#{product.productId}" />
+                                </p:column>
+                                <p:column headerText="Color" filterBy="#{product.color}" sortBy="#{product.color}" filterMatchMode="contains">
+                                    <h:outputText value="#{product.color}" />
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" 
+                                      resizable="false">
+                                <p:outputPanel id="productDetail" style="text-align:center;">
+                                    <p:panelGrid  columns="2" rendered="#{not empty lazyLoadProductBean.product}" columnClasses="label,value">
+                                        <f:facet name="header">
+                                            <!--<p:graphicImage name="demo/images/car/#{dtTableStateView.selectedCar.brand}-big.gif"/>--> 
+                                        </f:facet>
+
+                                        <h:outputText value="UPC" />
+                                        <h:outputText value="#{lazyLoadProductBean.product.upc}" />
+
+                                        <h:outputText value="Description" />
+                                        <h:outputText value="#{lazyLoadProductBean.product.productDescription}" />
+
+                                        <h:outputText value="Brand" />
+                                        <h:outputText value="#{lazyLoadProductBean.product.brandName}" />
+
+                                        <h:outputText value="Color:" />
+                                        <h:outputText value="#{lazyLoadProductBean.product.color}" style="color:#{lazyLoadProductBean.product.color}"/>
+                                    </p:panelGrid>
+                                </p:outputPanel>
+                            </p:dialog>                       
+                        </h:form>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>
+

@@ -1,0 +1,24 @@
+#productDetail { 
+    text-align:center; 
+}
+
+#image { 
+    width: 250px;
+    height: 190px;
+}
+
+#globalFilter { 
+    width:150px;
+    float: right;
+    /*text-align: right;*/
+}
+
+.ui-widget {
+    font-family: arial; 
+    font-size: 12px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+ 

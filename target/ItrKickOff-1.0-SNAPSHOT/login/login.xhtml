@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Inventory Management</title>            
+
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+
+        <h:outputStylesheet library="itr" name="css/login.css"/>
+    </h:head>
+    <h:body>
+        <ui:decorate template="../template/layout.xhtml">                        
+
+            <!-- skip subtitle sections -->
+            <ui:param name="subtitle" value="false"/>
+
+            <!-- skip intro but define header -->
+            <ui:param name="intro" value="false"/>
+
+            <!-- skip mainheader -->
+            <ui:param name="mainheader" value="false"/>
+
+            <!--OR define mainheader my removing comments -->
+            <!--            <ui:define name="mainheader">
+                            <h4>Vector Freight Header</h4>
+                        </ui:define>   -->
+
+            <!-- skip menu -->
+            <ui:param name="topmenu" value="false"/>
+
+            <!-- skip left and right panels (the central panel cannot be skipped) -->
+            <ui:param name="leftpanel" value="false"/>
+            <ui:param name="rightpanel" value="false"/>
+
+            <!-- define title -->
+            <ui:define name="title">
+                <h2>Inventory Turnover Ratio</h2>
+            </ui:define>           
+
+            <ui:remove>
+                <!-- define footer -->
+                <ui:define name="mainfooter">
+
+                </ui:define>   
+            </ui:remove>
+
+            <!-- define center panel content -->
+            <ui:define name="centerpanel">  
+                <div id="credentials">
+                    <p:panel style="border:1px solid grey">
+                        <h3>Sign in</h3>
+                        <!--<p:accordionPanel prependId="false">-->
+                        <p:tab title="Login">                            
+                            <form action="j_security_check" method="POST">
+                                <p>
+                                    <label>E-mail *:</label>  
+                                    <p:inputText id="j_username" 
+                                                 type="email" 
+                                                 placeholder="e-mail" 
+                                                 required="true"
+                                                 pt:name="j_username"
+                                                 pt:required="true"/>                                       
+                                </p>
+                                <p>
+                                    <label>Password *:</label>
+                                    <p:password id="j_password"
+                                                feedback="true"
+                                                inline="true"                                                
+                                                placeholder="password" 
+                                                required="true"
+                                                pt:name="j_password"
+                                                pt:required="true"/>
+                                </p>
+                                <p>
+                                    <button type="submit" name="submit">Login</button>
+                                </p>
+
+                            </form>
+                        </p:tab>
+
+                        <p:tab title="New Account">
+                        </p:tab>
+                        <!--</p:accordionPanel>-->
+                    </p:panel>
+                </div>
+            </ui:define>
+        </ui:decorate>
+    </h:body>
+</html>
+

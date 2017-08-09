@@ -1,0 +1,74 @@
+* { 
+    font-family: sans-serif;
+} 
+
+body {
+    /*background-image: url("#{resource['itr/images/warehouse.jpg']}");*/
+    background-repeat: no-repeat;
+    background-size: 100% auto;  
+}
+
+#title { 
+    border: 1px solid goldenrod;
+    width: 5px;
+    height: 5px;
+    display: inline-block;
+}
+
+#brandname { 
+    font-size: 2.4em;
+    text-transform: none;
+    /*font-weight: 700;*/
+    letter-spacing: -1px;
+    text-decoration: none;
+    /*border: 3px solid black;*/
+    padding-right: 10px;
+    color: white;
+}
+
+.credo { 
+    font-size: 1.4em;
+    margin: 2px auto;
+    padding-top: 10px;
+    letter-spacing: 7px;
+    line-height: 0;
+    /*border: 1px dashed red;*/
+}
+
+.ui-icon-check {
+    background-color: red;
+    color: red;
+}
+
+.ui-panelgrid-blank { 
+    /*border: 1px solid gold;*/
+    /*background-color: #ededed;*/ 
+    /*margin-bottom: 5px;*/
+}
+
+/*.account { 
+    border: 1px dashed green;
+        margin: 0 auto;
+    text-align: right;
+    float: right;
+    color: white;
+    padding-right: 20px;
+    font-size: 4em;
+}*/
+
+.ctrl-nav { 
+    /*border: 2px solid green;*/
+    /*text-align: left;*/
+} 
+
+#centerpanel { 
+    /*    background-size: 100% auto;*/
+    /*margin: 0 auto;*/
+    /*border: 1px solid red;*/
+    /*height: 100%;*/
+}
+
+#mainfooter { 
+    color: black;
+    background-color: #ededed; 
+}
