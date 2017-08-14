@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
-        <title>Inventory Management</title>            
+        <title>Inventory Management</title>
 
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -16,7 +16,7 @@
         <h:outputStylesheet library="itr" name="css/login.css"/>
     </h:head>
     <h:body>
-        <ui:decorate template="../template/layout.xhtml">                        
+        <ui:decorate template="../template/layout.xhtml">
 
             <!-- skip subtitle sections -->
             <ui:param name="subtitle" value="false"/>
@@ -42,53 +42,114 @@
             <!-- define title -->
             <ui:define name="title">
                 <h2>Inventory Turnover Ratio</h2>
-            </ui:define>           
+            </ui:define>
 
             <ui:remove>
                 <!-- define footer -->
                 <ui:define name="mainfooter">
 
-                </ui:define>   
+                </ui:define>
             </ui:remove>
 
             <!-- define center panel content -->
-            <ui:define name="centerpanel">  
+            <ui:define name="centerpanel">
                 <div id="credentials">
-                    <p:panel style="border:1px solid grey">
-                        <h3>Sign in</h3>
-                        <!--<p:accordionPanel prependId="false">-->
-                        <p:tab title="Login">                            
+                    <!--<p:panel style="border:1px solid grey">-->
+                    <!--<h3>Sign in</h3>-->
+                    <!--<p:accordionPanel prependId="false">-->
+                    <!--No need for feedback="true" inline="true" on password when users try to login, these are useful
+                    at user registration -->
+                    <p:tabView prependId="false" widgetVar="tabWidgetVar">
+                        <p:tab title="Sign in">
                             <form action="j_security_check" method="POST">
-                                <p>
-                                    <label>E-mail *:</label>  
-                                    <p:inputText id="j_username" 
-                                                 type="email" 
-                                                 placeholder="e-mail" 
+                                <h:panelGrid columns="2">
+                                    <label>E-mail *:</label>
+                                    <p:inputText id="j_username"
+                                                 type="email"
+                                                 placeholder="Email"
                                                  required="true"
                                                  pt:name="j_username"
-                                                 pt:required="true"/>                                       
-                                </p>
-                                <p>
+                                                 pt:required="true"/>
+
                                     <label>Password *:</label>
                                     <p:password id="j_password"
-                                                feedback="true"
-                                                inline="true"                                                
-                                                placeholder="password" 
+                                                placeholder="Password"
                                                 required="true"
                                                 pt:name="j_password"
                                                 pt:required="true"/>
-                                </p>
-                                <p>
-                                    <button type="submit" name="submit">Login</button>
-                                </p>
 
+                                    <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                            type="submit" name="submit">
+                                        <span class="ui-button-text ui-c">Login</span>
+                                    </button>
+                                </h:panelGrid>
                             </form>
                         </p:tab>
 
-                        <p:tab title="New Account">
+                        <p:tab title="Sign up">
+                            <h:form id="signup" prependId="false">
+                                <p:messages globalOnly="true" showDetail="true" showSummary="false"/>
+                                <h:panelGrid columns="1">
+                                    <h:outputLabel for="firstname" value="First name *:"/>
+                                    <p:inputText id="firstname" value="#{userSignUp.firstname}" label="First name"
+                                                 placeholder="First name" required="true" size="30"/>
+                                    <p:message for="firstname"/>
+
+                                    <h:outputLabel for="lastname" value="Last name *:"/>
+                                    <p:inputText id="lastname" value="#{userSignUp.lastname}" label="Last name"
+                                                 placeholder="Last name" required="true" size="30"/>
+                                    <p:message for="lastname"/>
+
+                                    <h:outputLabel for="username" value="User name *:"/>
+                                    <p:inputText id="username" value="#{userSignUp.username}" label="User name"
+                                                 placeholder="User name" required="true" size="30"/>
+                                    <p:message for="username"/>
+
+                                    <h:outputLabel for="password" value="Password *:"/>
+                                    <p:password id="password" value="#{userSignUp.password}" feedback="true" inline="true"
+                                                placeholder="Password" match="confirmPassword" label="Password"
+                                                required="true" size="30"/>
+                                    <p:message for="password"/>
+                                    <h:outputLabel for="confirmPassword" value="Confirm password *:"/>
+                                    <p:password id="confirmPassword" value="#{userSignUp.password}"
+                                                placeholder="Confirm password" label="confirm password"
+                                                required="true" size="30"/>
+                                    <p:message for="confirmPassword"/>
+
+                                    <h:outputLabel for="email" value="Email address *:"/>
+                                    <p:inputText id="email" value="#{userSignUp.email}" label="Email address"
+                                                 placeholder="Email address" required="true" size="30"/>
+                                    <p:message for="email"/>
+
+                                    <h:outputLabel for="phone" value="Phone number *:"/>
+                                    <p:inputMask id="phone" value="#{userSignUp.phoneNumber}" label="Phone number"
+                                                 placeholder="Phone number" required="true" size="30"
+                                                 mask="999-999-9999"/>
+                                    <p:message for="phone"/>
+
+                                    <h:outputLabel for="address" value="Address *:"/>
+                                    <p:inputTextarea id="address" value="#{userSignUp.address}" label="Address"
+                                                     placeholder="Address" required="true" cols="30"/>
+                                    <p:message for="address"/>
+
+                                    <p:commandButton value="Sign up" action="#{userSignUp.signUpAction()}"
+                                                     validateClient="true" update="signup"/>
+                                </h:panelGrid>
+                                <p>
+                                    <span>Already have an account? </span>
+                                    <p:commandLink value="Sign in" type="button" onclick="PF('tabWidgetVar').select(0)"/>
+                                </p>
+                                <p>
+                                    I agree to the Company
+                                    <h:outputLink value="../terms.html" target="_blank">Terms</h:outputLink>
+                                    and
+                                    <h:outputLink value="../terms.html" target="_blank">Privacy</h:outputLink>
+                                </p>
+                            </h:form>
                         </p:tab>
-                        <!--</p:accordionPanel>-->
-                    </p:panel>
+                    </p:tabView>
+                    <!--</p:accordionPanel>-->
+                    <!--</p:panel>-->
                 </div>
             </ui:define>
         </ui:decorate>

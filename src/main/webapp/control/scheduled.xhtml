@@ -4,69 +4,71 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Inventory Control</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>                            
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
     </h:head>
     <h:body>
         <h:outputStylesheet library="itr" name="css/index.css"/>
         <h:outputStylesheet library="itr" name="css/scheduled.css"/>
 
         <ui:remove>
-            #{facesContext.externalContext.applicationContextPath} 
+            #{facesContext.externalContext.applicationContextPath}
             #{request.contextPath}
         </ui:remove>
         <ui:debug hotkey="x" rendered="#{facesContext.application.projectStage == 'Development'}" />
 
         <ui:decorate template="../template/layout.xhtml">
             <ui:param name="title" value="true"/>
-            <ui:param name="subtitle" value="false"/>  
+            <ui:param name="subtitle" value="false"/>
             <ui:param name="mainheader" value="false"/>
             <ui:param name="topmenu" value="false"/>
             <ui:param name="leftpanel" value="true"/>
-            <ui:param name="rightpanel" value="true"/>  
+            <ui:param name="rightpanel" value="true"/>
             <ui:param name="centerpanel" value="true"/>
-            <ui:param name="mainfooter" value="true"/> 
+            <ui:param name="mainfooter" value="true"/>
 
             <ui:define name="title">
                 <div class="subcontainers title">
-                    <h:panelGrid columns="2">
+                    <h:panelGrid columns="3">
                         <p:graphicImage styleClass="brandImage" library="itr" name="images/itr1.jpg"/>
                         <h:outputFormat value="user:&nbsp;{0}">
-                            <f:param name="user" 
+                            <f:param name="user"
                                      value="#{facesContext.externalContext.remoteUser}"/>
                         </h:outputFormat>
-                    </h:panelGrid>    
+                        <h:form>
+                            <h:commandLink value="Logout" action="#{userLogout.logout}" />
+                        </h:form>
+                    </h:panelGrid>
                 </div>
             </ui:define>
 
             <ui:define name="centerpanel">
                 <div id="schDiv">
-                    <h:panelGrid columns="3">
+                    <h:panelGrid columns="3" rendered="#{request.isUserInRole('adminRole')}">
                         <h:form id="dt_mul_sel" enctype="multipart/form-data">
                             <p:growl id="messages" showDetail="false" autoUpdate="true"/>
                             <p:toolbar>
                                 <f:facet name="left">
                                     <h:panelGrid columns="4">
                                         <p:menuButton id="createListBtn" value="Create listing">
-                                            <p:menuitem value="Single listing" actionListener="#{menuView.save}" 
+                                            <p:menuitem value="Single listing" actionListener="#{menuView.save}"
                                                         update="messages" icon="ui-icon-disk"/>
                                         </p:menuButton>
                                         <span class="ui-separator">
                                             <span class="ui-icon ui-icon-grip-dotted-vertical" />
                                         </span>
                                         <!--file upload-->
-                                        <p:fileUpload id="up-fileInp" fileUploadListener="#{proformaFileHandlerBean.uploadProforma}" 
-                                                      mode="advanced" multiple="true" 
-                                                      onstart="PF('processButton').disable();"      
+                                        <p:fileUpload id="up-fileInp" fileUploadListener="#{proformaFileHandlerBean.uploadProforma}"
+                                                      mode="advanced" multiple="true"
+                                                      onstart="PF('processButton').disable();"
                                                       oncomplete="PF('processButton').enable();"
-                                                      update="messages" sizeLimit="2097152" 
-                                                      fileLimit="300" allowTypes="/(\.|\/)(xls|xlsx)$/"  
+                                                      update="messages" sizeLimit="2097152"
+                                                      fileLimit="300" allowTypes="/(\.|\/)(xls|xlsx)$/"
                                                       dragDropSupport="true"
                                                       widgetVar="uploadWV"/>
                                         <span class="ui-separator">
@@ -78,15 +80,15 @@
                         </h:form>
                         <h:form id="processProforma">
                             <p:commandButton value="Process the uploaded files" oncomplete="reload();"
-                                             actionListener="#{proformaFileHandlerBean.processProforma()}" 
+                                             actionListener="#{proformaFileHandlerBean.processProforma()}"
                                              onclick="PF('processButton').disable();disableChoosing();PF('pbAjax').start();"
-                                             widgetVar="processButton" />                    
-                            <p:progressBar widgetVar="pbAjax" ajax="true" 
-                                           value="#{progressBarViewBean.progress}" 
-                                           labelTemplate="{value}%" global="false"> 
+                                             widgetVar="processButton" />
+                            <p:progressBar widgetVar="pbAjax" ajax="true"
+                                           value="#{progressBarViewBean.progress}"
+                                           labelTemplate="{value}%" global="false">
                                 <f:param name="value" value="value"/>
-                            </p:progressBar>                                                           
-                        </h:form>                       
+                            </p:progressBar>
+                        </h:form>
                         <hr/>
                         <script>
                             function disableChoosing() {
@@ -96,80 +98,98 @@
                             function reload() {
                                 document.getElementById("productTableForm:tableDataOnFirstLoad").click();
                             }
-                        </script> 
+                        </script>
                     </h:panelGrid>
                     <div class="subcontainers centralpanel">
-                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
-                        <p:dialog widgetVar="statusDialog" modal="true" draggable="true" closable="false" resizable="false" 
+                        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                        <p:dialog widgetVar="statusDialog" modal="true" draggable="true" closable="false" resizable="false"
                                   showHeader="false" visible="false">
                             <p:graphicImage library="itr" name="images/spinner1.gif" width="50px" height="50px"/>
                         </p:dialog>
+                        <p:dialog widgetVar="soldInfoDlg" header="Enter sold information" modal="true"
+                                  closable="false" resizable="false">
+                            <h:form id="confirmSold">
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel for="soldBy" value="Sold by *:"/>
+                                    <p:inputText id="soldBy" value="#{scheduledWalmartProductBean.soldBy}"
+                                                 placeholder="Sold by" required="true" size="30"/>
 
-                        <h:form id="productTableForm"> 
-                            <p:commandButton id="tableDataOnFirstLoad" value="" 
+                                    <h:outputLabel for="soldDate" value="Sold date *:"/>
+                                    <p:calendar id="soldDate" value="#{scheduledWalmartProductBean.soldDate}"
+                                                placeholder="Enter sold date" required="true" size="30"/>
+                                    <p:commandButton value="Save" actionListener="#{scheduledWalmartProductBean.saveSoldInformations}"
+                                                     update=":confirmSold" validateClient="true" ajax="true"/>
+                                </h:panelGrid>
+                            </h:form>
+                        </p:dialog>
+
+                        <h:form id="productTableForm">
+                            <p:commandButton id="tableDataOnFirstLoad" value=""
                                              action="scheduled?faces-redirect=true" styleClass="inv-button"/>
                             <p:growl id="tbl-grw" showDetail="true"/>
                             <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable"
                                          value="#{scheduledWalmartProductBean.products}" rowKey="#{product.id}" editable="true">
 
-                                <p:ajax event="rowEdit" listener="#{scheduledWalmartProductBean.onRowEdit}" 
+                                <p:ajax event="rowEditInit" listener="#{scheduledWalmartProductBean.onRowEditInit}"/>
+                                <p:ajax event="rowEdit" listener="#{scheduledWalmartProductBean.onRowEdit}"
                                         update=":productTableForm:tbl-grw"/>
-                                <p:ajax event="rowEditCancel" listener="#{scheduledWalmartProductBean.onRowEdit}" 
+                                <p:ajax event="rowEditCancel" listener="#{scheduledWalmartProductBean.onRowEditCancel}"
                                         update=":productTableForm:tbl-grw"/>
 
-                                <f:facet name="header">  
+                                <f:facet name="header">
                                     <p:outputPanel>
                                         <h:outputText value="Search all fields:" />
-                                        <p:inputText id="globalFilter" onkeyup="PF('productTable').filter()" 
+                                        <p:inputText id="globalFilter" onkeyup="PF('productTable').filter()"
                                                      placeholder="Enter keyword"/>
                                         <p:commandButton id="togbtn" type="button" value="Columns" icon="ui-icon-calculator"/>
                                         <p:columnToggler datasource="mul-sel-dat" trigger="togbtn"/>
-                                        <p:commandButton process="mul-sel-dat" update=":productTableForm:multiProductDetail" 
+                                        <p:commandButton process="mul-sel-dat" update=":productTableForm:multiProductDetail"
                                                          icon="ui-icon-search" value="View" oncomplete="PF('multiProductDialog').show()" />
-                                    </p:outputPanel>         
+                                    </p:outputPanel>
                                 </f:facet>
 
                                 <ui:remove>
                                     <p:column selectionMode="multiple" styleClass="dtb-chk-sze"/>
                                 </ui:remove>
 
-                                <!--<p:column headerText="Classification" styleClass="dtb-act-dwn">
-                                    <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="{scheduledWalmartProductBean.clasification}" /></f:facet>
-                                        <f:facet name="input">
-                                            <p:selectOneMenu value="{scheduledWalmartProductBean.clasification}">
-                                                <f:selectItem itemValue="ACTIVE" itemLabel="Active" />
-                                                <f:selectItem itemValue="SOLD" itemLabel="Sold"/>
-                                                <f:selectItem itemValue="ASSEMBLE" itemLabel="Asssemble"/>
-                                                <f:selectItem itemValue="PARTIAL" itemLabel="Partial"/>
-                                                <f:selectItem itemValue="DAMAGED" itemLabel="Damaged"/>
-                                                <f:selectItem itemValue="UNDELIVERED" itemLabel="Undelivered"/>
-                                            </p:selectOneMenu>                                        
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>-->
+                                <p:column styleClass="row-tog">
+                                    <p:rowToggler />
+                                </p:column>
+
+                                <p:column headerText="Classification" styleClass="dtb-act-dwn">
+                                    <p:commandLink id="act-drp-dwn" value="Revise &#9660;"/>
+                                    <p:menu overlay="true" trigger="act-drp-dwn" my="left top" at="left bottom">
+                                        <p:menuitem value="Active"
+                                                    actionListener="#{scheduledWalmartProductBean.activateProductAction('Active')}" />
+                                        <p:menuitem value="Sold" url="#"/>
+                                        <p:menuitem value="Assemble" url="#"/>
+                                        <p:menuitem value="Partial" url="#"/>
+                                        <p:menuitem value="Damaged" url="#"/>
+                                        <p:menuitem value="Undelivered" url="#"/>
+                                    </p:menu>
+                                </p:column>
 
                                 <!-- ============================================================================================================ -->
 
                                 <p:column headerText="Image" styleClass="dtb-img-col-sze">
-                                    <p:commandLink process="@this" 
-                                                   actionListener="#{scheduledWalmartProductBean.extractImages(product.imgUrl)}" 
+                                    <p:commandLink process="@this"
+                                                   actionListener="#{scheduledWalmartProductBean.extractImages(product.imgUrl)}"
                                                    update=":galeriaDialogId" oncomplete="PF('galeriaDialog').show()">
-                                        <p:graphicImage id="image" value="#{product.imgUrl}"/>                                    
+                                        <p:graphicImage id="image" value="#{product.imgUrl}"/>
                                     </p:commandLink>
                                 </p:column>
-                                <p:column headerText="UPC" filterBy="#{product.upc}" 
+                                <p:column headerText="UPC" filterBy="#{product.upc}"
                                           sortBy="#{product.upc}" filterMatchMode="contains">
                                     <p:cellEditor>
-                                        <f:facet name="output"> 
+                                        <f:facet name="output">
                                             <h:outputText value="#{product.upc}"/>
-                                        </f:facet> 
-                                        <f:facet name="input"> 
-                                            <p:inputText value="#{product.upc}"/> 
-                                        </f:facet> 
-                                    </p:cellEditor> 
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="#{product.upc}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
                                 </p:column>
-                                <p:column headerText="Product" filterBy="#{product.productName}" 
+                                <p:column headerText="Product" filterBy="#{product.productName}"
                                           sortBy="#{product.productName}" filterMatchMode="contains">
                                     <p:cellEditor>
                                         <f:facet name="output">
@@ -181,14 +201,14 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <!-- ============================================================================================================ -->    
+                                <!-- ============================================================================================================ -->
 
-                                <p:column headerText="Category" filterBy="#{product.category}" styleClass="dtb-cat-sze" 
+                                <p:column headerText="Category" filterBy="#{product.category}" styleClass="dtb-cat-sze"
                                           sortBy="#{product.category}" filterMatchMode="contains">
                                     <h:outputText value="#{product.category}" />
                                 </p:column>
 
-                                <p:column headerText="Bin" filterBy="#{product.binLocation}" sortBy="#{product.binLocation}" 
+                                <p:column headerText="Bin" filterBy="#{product.binLocation}" sortBy="#{product.binLocation}"
                                           styleClass="dtb-bin-loc-sze" filterMatchMode="contains">
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{product.binLocation}" /></f:facet>
@@ -196,14 +216,14 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="Quantity" sortBy="#{product.totalQty}" filterMatchMode="contains" 
+                                <p:column headerText="Quantity" sortBy="#{product.totalQty}" filterMatchMode="contains"
                                           styleClass="dtb-sze-sze">
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{product.totalQty}" /></f:facet>
                                         <f:facet name="input"><p:inputText value="#{product.totalQty}"/></f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column headerText="Price" sortBy="#{product.salePrice}" filterMatchMode="contains" 
+                                <p:column headerText="Price" sortBy="#{product.salePrice}" filterMatchMode="contains"
                                           styleClass="dtb-sal-sze">
                                     <p:cellEditor>
                                         <f:facet name="output">
@@ -215,7 +235,7 @@
                                         <f:facet name="input"><p:inputText value="#{product.salePrice}"/></f:facet>
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column headerText="Color" filterBy="#{product.color}" sortBy="#{product.color}" 
+                                <p:column headerText="Color" filterBy="#{product.color}" sortBy="#{product.color}"
                                           filterMatchMode="exact" styleClass="dtb-col-sze" visible="false">
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{product.color}" /></f:facet>
@@ -223,29 +243,33 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="Status" sortBy="#{product.status}" 
+                                <p:column headerText="Status" sortBy="#{product.status}"
                                           styleClass="dtb-sts-sze">
                                     <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{product.status}" /></f:facet>
                                         <f:facet name="input">
-                                            <p:selectOneMenu value="#{product.status}">
+                                            <p:selectOneMenu value="#{product.status}"
+                                                             valueChangeListener="#{scheduledWalmartProductBean.statusChangeListener}">
                                                 <f:selectItems value="#{scheduledWalmartProductBean.statusSelection.values}" />
-                                            </p:selectOneMenu>                                        
+                                            </p:selectOneMenu>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column headerText="Store" sortBy="#{product.store}" 
+                                <p:column headerText="Store" sortBy="#{product.store}"
                                           styleClass="dtb-sts-sze">
                                     <h:outputText value="#{product.store}" />
                                 </p:column>
 
-                                <p:column headerText="Barcode">
-                                    <p:barcode styleClass="bar-sze" value="#{product.upc}" type="upca" format="png" 
-                                               width="120px" height="120px"/>
-                                </p:column> 
+                                <p:rowExpansion styleClass="row-exp">
+                                    <p:panelGrid styleClass="bar-pnl" columns="1" style="width:150px">
+                                        <f:facet name="header" class="bar-fct">
+                                            <p:barcode styleClass="bar-sze" value="#{product.upc}" type="upca" format="png"/>
+                                        </f:facet>
+                                    </p:panelGrid>
+                                </p:rowExpansion>
 
-                                <p:column style="width:32px">
+                                <p:column style="width:32px" rendered="#{request.isUserInRole('adminRole')}">
                                     <p:rowEditor/>
                                 </p:column>
                             </p:dataTable>
@@ -256,12 +280,12 @@
                                         <h:outputText value="#{product.id} - #{product.brandName}" style="display:block"/>
                                     </ui:repeat>
                                 </p:outputPanel>
-                            </p:dialog>                            
+                            </p:dialog>
                         </h:form>
                         <p:dialog id="galeriaDialogId" widgetVar="galeriaDialog" position="center" width="620" height="533" modal="true">
                             <p:galleria value="#{scheduledWalmartProductBean.galeria}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
                                 <p:graphicImage value="#{image}"/>
-                            </p:galleria>           
+                            </p:galleria>
                         </p:dialog>
                         <p:dialog id="exceptionDialog" position="center" header="Exception occured!" widgetVar="exceptionDialog" height="100px">
                             <strong>Error occurred during processing files !</strong>

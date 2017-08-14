@@ -1,5 +1,5 @@
 p {
-    text-align: left;    
+    text-align: left;
 }
 
 label {
@@ -7,7 +7,7 @@ label {
 }
 
 #credentials {
-    width:250px; 
+    width:310px;
     margin:0 auto;
 }
 
@@ -17,4 +17,12 @@ label {
 
 #j_password {
     width: 185px;
+}
+
+#signup {
+    text-align: left;
+}
+
+#signup p {
+    text-align: center;
 }

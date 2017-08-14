@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -15,30 +15,36 @@
                 <p:accordionPanel multiple="true">
                     <p:tab id="sellingManager" title="Selling Manager">
                         <p:panelGrid id="controlKeys" columns="1">
-                            <p:link styleClass="ctr-keys" outcome="/control/scheduled" 
-                                    value="Scheduled #{scheduledWalmartProductBean.countProducts()}">
+                            <p:link styleClass="ctr-keys" outcome="/control/scheduled"
+                                    value="Scheduled #{scheduledWalmartProductBean.countProducts()}"
+                                    rendered="#{request.isUserInRole('adminRole')}">
                                 <f:param name="totalQty" value="#{scheduledWalmartProductBean.countProducts()}"/>
                             </p:link>
-                            <p:link styleClass="ctr-keys" outcome="/control/active" 
+                            <p:link styleClass="ctr-keys" outcome="/control/active"
                                     value="Active #{scheduledWalmartProductBean.countSubproducts('ACTIVE')}">
                                 <f:param name="activeQty" value="10"/>
                             </p:link>
                             <p:link styleClass="ctr-keys" outcome="/control/sold" value="Sold">
                                 <f:param name="soldQty" value="10"/>
                             </p:link>
-                            <p:link styleClass="ctr-keys" outcome="/control/aging" value="Aging">
+                            <p:link styleClass="ctr-keys" outcome="/control/aging" value="Aging"
+                                    rendered="#{request.isUserInRole('adminRole')}">
                                 <f:param name="laggardsQty" value="10"/>
                             </p:link>
-                            <p:link styleClass="ctr-keys" outcome="/control/assemble" value="Assemble">
+                            <p:link styleClass="ctr-keys" outcome="/control/assemble" value="Assemble"
+                                    rendered="#{request.isUserInRole('adminRole')}">
                                 <f:param name="assembleQty" value="10"/>
                             </p:link>
-                            <p:link styleClass="ctr-keys" outcome="/control/partial" value="Partial">
+                            <p:link styleClass="ctr-keys" outcome="/control/partial" value="Partial"
+                                    rendered="#{request.isUserInRole('adminRole')}">
                                 <f:param name="partialQty" value="10"/>
                             </p:link>
-                            <p:link styleClass="ctr-keys" outcome="/control/damaged" value="Damaged">
+                            <p:link styleClass="ctr-keys" outcome="/control/damaged" value="Damaged"
+                                    rendered="#{request.isUserInRole('adminRole')}">
                                 <f:param name="damagedQty" value="10"/>
                             </p:link>
-                            <p:link styleClass="ctr-keys" outcome="/control/shrinkage" value="Shrinkage">
+                            <p:link styleClass="ctr-keys" outcome="/control/shrinkage" value="Shrinkage"
+                                    rendered="#{request.isUserInRole('adminRole')}">
                                 <f:param name="shrinkageQty" value="10"/>
                             </p:link>
                         </p:panelGrid>
@@ -54,5 +60,5 @@
                 </p:accordionPanel>
             </div>
         </ui:insert>
-    </ui:composition>   
+    </ui:composition>
 </html>

@@ -4,6 +4,7 @@ import com.itr.parser.outlet.walmart.model.Selectable;
 import com.itr.parser.outlet.walmart.model.Selector;
 import com.itr.parser.outlet.walmart.model.WalmartImage;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -212,12 +213,12 @@ public class WalmartProduct implements Selectable, Serializable {
     @Column(name = "total_qty")
     private Integer totalQty;
 
-    //    <===========================================================================>    
+    //    <===========================================================================>
 //    need to create a cdi bean validation to make sure the product is not placed in a bin that is full; this bin could be in any locale
     @Column(name = "bin_location")
     private String binLocation;
 
-    //    <===========================================================================>    
+    //    <===========================================================================>
 //    product to be sent to a store location cdi built as follows TXDAL75247 or OKOKC73107 ...  state + city + zipcode
     @Column(name = "store_location")
     private String storeLocation;
@@ -235,7 +236,7 @@ public class WalmartProduct implements Selectable, Serializable {
     })
     private Address storeAddress;
 
-    //    <===========================================================================>    
+    //    <===========================================================================>
 //    create cdi to calculate total qty in store of specific locale
     @Column(name = "store_qty")
     private Integer storeQty;
@@ -256,6 +257,30 @@ public class WalmartProduct implements Selectable, Serializable {
 
     @Column(name = "store")
     private String store;
+
+    @Column(name = "scheduledDatestamp")
+    private LocalDateTime scheduledDatestamp;
+
+    @Column(name = "activeDatestamp")
+    private LocalDateTime activeDatestamp;
+
+    @Column(name = "soldDatestamp")
+    private LocalDateTime soldDatestamp;
+
+    @Column(name = "agingDatestamp")
+    private LocalDateTime agingDatestamp;
+
+    @Column(name = "assembleDatestamp")
+    private LocalDateTime assembleDatestamp;
+
+    @Column(name = "partialDatestamp")
+    private LocalDateTime partialDatestamp;
+
+    @Column(name = "damagedDatestamp")
+    private LocalDateTime damagedDatestamp;
+
+    @Column(name = "shrinkageDatestamp")
+    private LocalDateTime shrinkageDatestamp;
 
     public Long getId() {
         return id;
@@ -835,6 +860,70 @@ public class WalmartProduct implements Selectable, Serializable {
 
     public void setStore(String store) {
         this.store = store;
+    }
+
+    public LocalDateTime getScheduledDatestamp() {
+        return scheduledDatestamp;
+    }
+
+    public void setScheduledDatestamp(LocalDateTime scheduledDatestamp) {
+        this.scheduledDatestamp = scheduledDatestamp;
+    }
+
+    public LocalDateTime getActiveDatestamp() {
+        return activeDatestamp;
+    }
+
+    public void setActiveDatestamp(LocalDateTime activeDatestamp) {
+        this.activeDatestamp = activeDatestamp;
+    }
+
+    public LocalDateTime getSoldDatestamp() {
+        return soldDatestamp;
+    }
+
+    public void setSoldDatestamp(LocalDateTime soldDatestamp) {
+        this.soldDatestamp = soldDatestamp;
+    }
+
+    public LocalDateTime getAgingDatestamp() {
+        return agingDatestamp;
+    }
+
+    public void setAgingDatestamp(LocalDateTime agingDatestamp) {
+        this.agingDatestamp = agingDatestamp;
+    }
+
+    public LocalDateTime getAssembleDatestamp() {
+        return assembleDatestamp;
+    }
+
+    public void setAssembleDatestamp(LocalDateTime assembleDatestamp) {
+        this.assembleDatestamp = assembleDatestamp;
+    }
+
+    public LocalDateTime getPartialDatestamp() {
+        return partialDatestamp;
+    }
+
+    public void setPartialDatestamp(LocalDateTime partialDatestamp) {
+        this.partialDatestamp = partialDatestamp;
+    }
+
+    public LocalDateTime getDamagedDatestamp() {
+        return damagedDatestamp;
+    }
+
+    public void setDamagedDatestamp(LocalDateTime damagedDatestamp) {
+        this.damagedDatestamp = damagedDatestamp;
+    }
+
+    public LocalDateTime getShrinkageDatestamp() {
+        return shrinkageDatestamp;
+    }
+
+    public void setShrinkageDatestamp(LocalDateTime shrinkageDatestamp) {
+        this.shrinkageDatestamp = shrinkageDatestamp;
     }
 
     @Override

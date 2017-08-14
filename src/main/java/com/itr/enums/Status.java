@@ -6,7 +6,7 @@ import java.util.Map;
 public final class Status {
 
     /* Usage in java code:
-    
+
     String newStatus = Status.ACTIVE;
     or
     walmartProduct.setStatus(Status.DAMAGED);
@@ -24,6 +24,7 @@ public final class Status {
 
     public Status() {
         values = new LinkedHashMap<>();
+        values.put("Make a selection", "");
         values.put("Scheduled", SCHEDULED);     // label and value for <f:selectItems />
         values.put("Active", ACTIVE);
         values.put("Sold", SOLD);
