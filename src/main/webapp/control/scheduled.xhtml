@@ -175,7 +175,7 @@
                                     <p:commandLink process="@this"
                                                    actionListener="#{scheduledWalmartProductBean.extractImages(product.imgUrl)}"
                                                    update=":galeriaDialogId" oncomplete="PF('galeriaDialog').show()">
-                                        <p:graphicImage id="image" value="#{product.imgUrl}"/>
+                                        <p:graphicImage id="image" value="#{product.imgUrl}" width="75px" height="90px" />
                                     </p:commandLink>
                                 </p:column>
                                 <p:column headerText="UPC" filterBy="#{product.upc}"
@@ -262,11 +262,7 @@
                                 </p:column>
 
                                 <p:rowExpansion styleClass="row-exp">
-                                    <p:panelGrid styleClass="bar-pnl" columns="1" style="width:150px">
-                                        <f:facet name="header" class="bar-fct">
-                                            <p:barcode styleClass="bar-sze" value="#{product.upc}" type="upca" format="png"/>
-                                        </f:facet>
-                                    </p:panelGrid>
+                                    <p:barcode value="#{product.upc}" type="upca" format="png"/>
                                 </p:rowExpansion>
 
                                 <p:column style="width:32px" rendered="#{request.isUserInRole('adminRole')}">

@@ -2,6 +2,7 @@ package com.itr.outlet.walmart.boundary;
 
 import com.itr.entity.SoldProducts;
 import com.itr.entity.WalmartProduct;
+import com.itr.enums.SearchBy;
 import com.itr.enums.Status;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -181,6 +182,42 @@ public class WalmartProductService {
                 cb.equal(product.get("status"), Status.ACTIVE), cb.equal(product.get("status"), Status.SOLD)));
 
         TypedQuery<WalmartProduct> tq = em.createQuery(cq);
+        return tq.getResultList();
+    }
+
+    public List<WalmartProduct> findAllActive(int page, int pageSize, String filter, String searchWords) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<WalmartProduct> cq = cb.createQuery(WalmartProduct.class);
+        Root<WalmartProduct> product = cq.from(WalmartProduct.class);
+
+        cq.select(product).where(cb.equal(product.get("status"), Status.ACTIVE));
+
+        String pattern;
+        if ((searchWords != null) && !(searchWords.trim().isEmpty())) {
+            pattern = "%" + searchWords + "%";
+
+            switch (filter) {
+                case SearchBy.CATEGORY:
+                    cq.where(cb.like(product.get("category"), pattern));
+                    break;
+                case SearchBy.PRODUCT_NAME:
+                    cq.where(cb.like(product.get("productName"), pattern));
+                    break;
+                default:
+                    cq.where(cb.or(cb.like(product.get("category"), pattern),
+                            cb.like(product.get("productName"), pattern)));
+                    break;
+            }
+        }
+
+        // pagination
+        TypedQuery<WalmartProduct> tq = em.createQuery(cq);
+        if (pageSize >= 0) {
+            tq.setMaxResults(pageSize);
+        }
+        if (page > 0) {
+            tq.setFirstResult(page * pageSize);
+        }
         return tq.getResultList();
     }
 
