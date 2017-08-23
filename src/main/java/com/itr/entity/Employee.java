@@ -48,8 +48,8 @@ public class Employee implements Serializable {
     private String address;
 
     @NotNull
-    @Size(max = 15)
-    @Column(name = "phoneNumber", length = 15, nullable = false)
+    @Size(max = 20)
+    @Column(name = "phoneNumber", length = 20, nullable = false)
     private String phoneNumber;
 
     public Employee() {

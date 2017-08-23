@@ -3,6 +3,7 @@ package com.itr.outlet.walmart.control;
 import com.itr.outlet.walmart.boundary.WalmartProductService;
 import com.itr.entity.WalmartProduct;
 import com.itr.enums.Status;
+import com.itr.outlet.walmart.boundary.MessageService;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +40,9 @@ public class ScheduledWalmartProductBean implements Serializable {
     private String soldBy;
     private Date soldDate;  // We should use Java 8 LocalDate, but it is not currently supported by PrimeFaces p:calendar
     //private String clasification;
+
+    @EJB
+    private MessageService messageService;
 
     @EJB
     private WalmartProductService walmartProductService;
@@ -124,6 +128,14 @@ public class ScheduledWalmartProductBean implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public WalmartProduct getSelectedWalmartProduct() {
+        return selectedWalmartProduct;
+    }
+
+    public void setSelectedWalmartProduct(WalmartProduct selectedWalmartProduct) {
+        this.selectedWalmartProduct = selectedWalmartProduct;
     }
 
     public String getSoldBy() {
@@ -244,6 +256,11 @@ public class ScheduledWalmartProductBean implements Serializable {
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void sendSMS() {
+        messageService.sendMessagesAsynchronously(Arrays.asList(selectedWalmartProduct));
+        Faces.getContext().addMessage(null, new FacesMessage("Sending SMS.. This may take a few seconds.."));
     }
 
 //    public void cellEdit(CellEditEvent event) {

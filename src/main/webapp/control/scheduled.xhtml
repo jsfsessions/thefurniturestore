@@ -152,7 +152,7 @@
                                     <p:column selectionMode="multiple" styleClass="dtb-chk-sze"/>
                                 </ui:remove>
 
-                                <p:column styleClass="row-tog">
+                                <p:column styleClass="row-tog" style="width:16px">
                                     <p:rowToggler />
                                 </p:column>
 
@@ -254,6 +254,11 @@
                                             </p:selectOneMenu>
                                         </f:facet>
                                     </p:cellEditor>
+                                    <p:commandButton value="Send SMS" action="#{scheduledWalmartProductBean.sendSMS}"
+                                                     rendered="#{product.status eq 'ACTIVE'}">
+                                        <f:setPropertyActionListener value="#{product}"
+                                                                     target="#{scheduledWalmartProductBean.selectedWalmartProduct}" />
+                                    </p:commandButton>
                                 </p:column>
 
                                 <p:column headerText="Store" sortBy="#{product.store}"

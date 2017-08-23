@@ -4,7 +4,8 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Inventory Management</title>
 
@@ -53,6 +54,11 @@
 
             <!-- define center panel content -->
             <ui:define name="centerpanel">
+                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                <p:dialog widgetVar="statusDialog" modal="true" draggable="true" closable="false" resizable="false"
+                          showHeader="false" visible="false">
+                    <p:graphicImage library="itr" name="images/spinner1.gif" width="50px" height="50px"/>
+                </p:dialog>
                 <div id="credentials">
                     <!--<p:panel style="border:1px solid grey">-->
                     <!--<h3>Sign in</h3>-->
@@ -89,6 +95,13 @@
                         <p:tab title="Sign up">
                             <h:form id="signup" prependId="false">
                                 <p:messages globalOnly="true" showDetail="true" showSummary="false"/>
+                                <p:tooltip id="toolTipFocus" for="phone" showEvent="focus" hideEvent="blur">
+                                    <strong>Examples:</strong>
+                                    <p>(734) 555 1212</p>
+                                    <p>734 555 1212</p>
+                                    <p>734-555-1212</p>
+                                    <p>7345551212</p>
+                                </p:tooltip>
                                 <h:panelGrid columns="1">
                                     <h:outputLabel for="firstname" value="First name *:"/>
                                     <p:inputText id="firstname" value="#{userSignUp.firstname}" label="First name"
@@ -122,9 +135,10 @@
                                     <p:message for="email"/>
 
                                     <h:outputLabel for="phone" value="Phone number *:"/>
-                                    <p:inputMask id="phone" value="#{userSignUp.phoneNumber}" label="Phone number"
-                                                 placeholder="Phone number" required="true" size="30"
-                                                 mask="999-999-9999"/>
+                                    <p:inputText id="phone" value="#{userSignUp.phoneNumber}" label="Phone number"
+                                                 placeholder="Phone number" required="true" size="30">
+                                        <f:validator validatorId="com.itr.phoneNumberValidator" />
+                                    </p:inputText>
                                     <p:message for="phone"/>
 
                                     <h:outputLabel for="address" value="Address *:"/>

@@ -15,6 +15,8 @@ import javax.inject.Named;
 @ViewScoped
 public class ProductsView implements Serializable {
 
+    private static final long serialVersionUID = -5016225980570288886L;
+
     @EJB
     private WalmartProductService walmartProductService;
 

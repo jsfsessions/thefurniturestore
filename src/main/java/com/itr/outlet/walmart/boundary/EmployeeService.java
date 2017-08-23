@@ -7,6 +7,7 @@ import com.itr.entity.Employee;
 import com.itr.enums.UserGroup;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -57,6 +58,11 @@ public class EmployeeService {
                 .setParameter(2, UserGroup.USER_ROLE)
                 .executeUpdate();
         LOGGER.info("Employee credentials successfully saved...");
+    }
+
+    public List<String> findEmployeesPhoneNumbers() {
+        TypedQuery<String> query = em.createQuery("SELECT e.phoneNumber FROM Employee e", String.class);
+        return query.getResultList();
     }
 
     private boolean isUniqueEmployeeUsername(String username) {

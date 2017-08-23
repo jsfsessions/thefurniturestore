@@ -50,7 +50,7 @@ public class UserSignUp {
     private String address;
 
     @NotNull
-    @Size(max = 15)
+    @Size(max = 20)
     private String phoneNumber;
 
     public String getFirstname() {
@@ -114,8 +114,10 @@ public class UserSignUp {
             // Hash password from string
             String hashedPassword = employeeService.hashPassword(password);
 
+            String phone = phoneNumber.replace(" ", "");   // Remove any space characters before saving
+
             // Save to database
-            employeeService.registerEmployee(firstname, lastname, username, hashedPassword, email, address, phoneNumber);
+            employeeService.registerEmployee(firstname, lastname, username, hashedPassword, email, address, phone);
             return "login?faces-redirect=true";
 
         } catch (UsernameAlreadyExistException e) {
