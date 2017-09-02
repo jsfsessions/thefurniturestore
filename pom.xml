@@ -8,12 +8,12 @@
     <packaging>war</packaging>
 
     <name>ItrKickOff</name>
-       
-    <properties> 
-        <skipTests>false</skipTests>       
+
+    <properties>
+        <skipTests>false</skipTests>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
+
         <javaee.version>7.0</javaee.version>
         <omnifaces.version>2.5.1</omnifaces.version>
         <primefaces.version>5.3</primefaces.version>
@@ -30,8 +30,8 @@
         <primefaces-theme.version>1.0.8</primefaces-theme.version>
         <prettyfaces.version>3.4.1.Final</prettyfaces.version>
     </properties>
-    
-    <dependencies>      
+
+    <dependencies>
         <dependency>
             <groupId>net.glxn</groupId>
             <artifactId>qrgen</artifactId>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>com.twilio.sdk</groupId>
             <artifactId>twilio</artifactId>
-            <version>7.14.0</version> 
+            <version>7.14.0</version>
         </dependency>
 
         <!-- Java EE distribution -->
@@ -78,30 +78,30 @@
             <artifactId>jta</artifactId>
             <version>${javax-transaction.version}</version>
         </dependency>
-        
+
         <!-- JavaServer Faces libraries -->
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
             <version>${omnifaces.version}</version>
-        </dependency>        
-        <dependency>  
-            <groupId>org.primefaces</groupId>  
-            <artifactId>primefaces</artifactId>  
-            <version>${primefaces.version}</version>  
-        </dependency>               
-        <dependency>  
-            <groupId>org.primefaces.extensions</groupId>  
-            <artifactId>all-themes</artifactId>   
-            <version>${primefaces-theme.version}</version>  
-        </dependency>            
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>${primefaces.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.primefaces.extensions</groupId>
+            <artifactId>all-themes</artifactId>
+            <version>${primefaces-theme.version}</version>
+        </dependency>
         <!-- MySQL database driver -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector.version}</version>
         </dependency>
-        
+
         <!-- Hibernate -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -141,7 +141,7 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
         </dependency>
-        
+
         <!-- for JSF 2.x -->
         <dependency>
             <groupId>org.ocpsoft.rewrite</groupId>
@@ -152,15 +152,15 @@
             <groupId>org.ocpsoft.rewrite</groupId>
             <artifactId>rewrite-config-prettyfaces</artifactId>
             <version>${prettyfaces.version}</version>
-        </dependency> 
-      
+        </dependency>
+
         <!-- Jsoup HTML parser -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.10.2</version>
         </dependency>
-        		
+
         <!--  Java libraries for reading and writing files in Microsoft Office formats -->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -177,22 +177,28 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml-schemas</artifactId>
             <version>3.16-beta1</version>
-        </dependency> 
-        
-        <!--XML document that is an alternative to that provided by the Document Object Model--> 
+        </dependency>
+        <!--PrimeFaces export as PDF-->
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+
+        <!--XML document that is an alternative to that provided by the Document Object Model-->
         <dependency>
             <groupId>xml-apis</groupId>
             <artifactId>xml-apis</artifactId>
             <version>1.4.01</version>
         </dependency>
-        
+
         <!--google api for product search-->
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-customsearch</artifactId>
             <version>v1-rev54-1.22.0</version>
         </dependency>
-                    
+
     </dependencies>
     <build>
         <plugins>
@@ -265,7 +271,7 @@
                         <version>${javax-transaction.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>            
+            </plugin>
         </plugins>
     </build>
     <repositories>

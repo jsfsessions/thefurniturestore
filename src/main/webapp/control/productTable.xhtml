@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <!-- Common page fragment included in all /control/*.xhtml pages -->
+        <h:outputStylesheet library="itr" name="css/grid.css"/>
+
+        <script>
+            function reload() {
+                document.getElementById("productTableForm:tableDataOnFirstLoad").click();
+            }
+            function submitTableForm() {
+                document.getElementById("productTableForm:submitBtn").click();
+            }
+        </script>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+        <p:dialog widgetVar="statusDialog" modal="true" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage library="itr" name="images/spinner1.gif" width="50px" height="50px"/>
+        </p:dialog>
+
+        <p:growl id="messages" showDetail="false" autoUpdate="true"/>
+
+        <h:form id="productTableForm">
+            <p:commandButton id="tableDataOnFirstLoad" action="scheduled?faces-redirect=true" styleClass="inv-button"/>
+            <p:commandButton id="submitBtn" styleClass="inv-button"/>
+            <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable"
+                         value="#{walmartProductBean.lazyModel}" editable="true" lazy="true" rowKey="#{product.id}"
+                         selection="#{walmartProductBean.selectedWalmartProducts}" rowSelectMode="checkbox"
+                         filteredValue="#{walmartProductBean.filteredWalmartProducts}" filterDelay="500"
+                         paginator="true" rows="20" rowsPerPageTemplate="20,40,60"
+                         paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+
+                <p:ajax event="rowEditInit" listener="#{walmartProductBean.onRowEditInit}"/>
+                <p:ajax event="rowEdit" listener="#{walmartProductBean.onRowEdit}" update=":accordionPanel"/>
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Search all fields:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('productTable').filter()"
+                                     placeholder="Enter keyword"/>
+                        <p:commandButton id="togbtn" type="button" value="Columns" icon="ui-icon-calculator"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:column selectionMode="multiple" style="width:20px"/>
+
+                <p:column style="width:16px">
+                    <p:rowToggler />
+                </p:column>
+
+                <p:column headerText="Image" style="width:6%">
+                    <p:commandLink process="@this"
+                                   actionListener="#{walmartProductBean.extractImages(product.imgUrl)}"
+                                   update=":galeriaDialogId" oncomplete="PF('galeriaDialog').show()">
+                        <p:graphicImage id="image" value="#{product.imgUrl}" width="75px" height="90px"/>
+                    </p:commandLink>
+                </p:column>
+
+                <p:column headerText="UPC" filterBy="#{product.upc}" style="width:9%"
+                          sortBy="#{product.upc}" filterMatchMode="contains">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{product.upc}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{product.upc}"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Product" filterBy="#{product.productName}"
+                          sortBy="#{product.productName}" filterMatchMode="contains">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{product.productName}"/>
+                        </f:facet>
+                        <f:facet name="input">
+                            <p:inputTextarea value="#{product.productName}" cols="15" rows="6"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Category" filterBy="#{product.category}"
+                          sortBy="#{product.category}" filterMatchMode="contains">
+                    <h:outputText value="#{product.category}" />
+                </p:column>
+
+                <p:column headerText="Bin" filterBy="#{product.binLocation}" sortBy="#{product.binLocation}"
+                          filterMatchMode="contains" style="width:9%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.binLocation}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.binLocation}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Quantity" sortBy="#{product.totalQty}" filterMatchMode="contains" style="width:5%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.totalQty}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.totalQty}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Price" sortBy="#{product.salePrice}" filterMatchMode="contains" style="width:5%">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="$ #{product.salePrice}">
+                                <f:convertNumber type="currency"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.salePrice}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Color" sortBy="#{product.color}" filterMatchMode="exact" style="width:5%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.color}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.color}"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Status" style="width:5%">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{product.status}" /></f:facet>
+                        <f:facet name="input">
+                            <p:selectOneMenu value="#{product.status}"
+                                             valueChangeListener="#{walmartProductBean.statusChangeListener}">
+                                <f:selectItems value="#{walmartProductBean.status.values}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Store" sortBy="#{product.store}" style="width:5%">
+                    <h:outputText value="#{product.store}" />
+                </p:column>
+
+                <p:column style="width:32px" rendered="#{request.isUserInRole('adminRole')}">
+                    <p:rowEditor/>
+                </p:column>
+
+                <p:rowExpansion styleClass="row-exp">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <p:barcode value="#{product.upc}" type="upca" format="png"/>
+                        </div>
+                        <div class="ui-g-12 ui-md-6 ui-lg-6">
+                            <p:panelGrid columns="2">
+                                <h:outputText value="Scheduled datestamp:"/>
+                                <h:outputText value="#{product.scheduledDatestamp}" converter="localDateTimeConverter"/>
+
+                                <h:outputText value="Active datestamp:"/>
+                                <h:outputText value="#{product.activeDatestamp}" converter="localDateTimeConverter"/>
+
+                                <h:outputText value="Sold datestamp:"/>
+                                <h:outputText value="#{product.soldDatestamp}" converter="localDateTimeConverter"/>
+
+                                <h:outputText value="Aging datestamp:"/>
+                                <h:outputText value="#{product.agingDatestamp}" converter="localDateTimeConverter"/>
+
+                                <h:outputText value="Assemble datestamp:"/>
+                                <h:outputText value="#{product.assembleDatestamp}" converter="localDateTimeConverter"/>
+
+                                <h:outputText value="Partial datestamp:"/>
+                                <h:outputText value="#{product.partialDatestamp}" converter="localDateTimeConverter"/>
+
+                                <h:outputText value="Damaged datestamp:"/>
+                                <h:outputText value="#{product.damagedDatestamp}" converter="localDateTimeConverter"/>
+
+                                <h:outputText value="Shrinkage datestamp:"/>
+                                <h:outputText value="#{product.shrinkageDatestamp}" converter="localDateTimeConverter"/>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                </p:rowExpansion>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog id="galeriaDialogId" widgetVar="galeriaDialog" position="center" width="620" height="533" modal="true">
+            <p:galleria value="#{walmartProductBean.galeria}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
+                <p:graphicImage value="#{image}"/>
+            </p:galleria>
+        </p:dialog>
+
+        <p:dialog widgetVar="soldInfoDlg" header="Enter sold information" modal="true"
+                  closable="false" resizable="false">
+            <h:form id="confirmSold">
+                <h:panelGrid columns="2">
+                    <h:outputLabel for="soldBy" value="Sold by *:"/>
+                    <p:selectOneMenu id="soldBy" value="#{walmartProductBean.soldBy}" required="true" style="width:168px;">
+                        <f:selectItem itemLabel="Select an employee" noSelectionOption="true"/>
+                        <f:selectItems value="#{employeesBean.employees}" var="e"
+                                       itemLabel="#{e.lastname}" itemValue="#{e.lastname}"/>
+                    </p:selectOneMenu>
+
+                    <h:outputLabel for="soldDate" value="Sold date *:"/>
+                    <p:calendar id="soldDate" value="#{walmartProductBean.soldDate}"
+                                placeholder="Enter sold date" required="true" size="30"
+                                pattern="MM/dd/yyyy HH:mm:ss"/>
+
+                    <p:commandButton value="Save" actionListener="#{walmartProductBean.saveSoldInformations}"
+                                     update=":confirmSold" validateClient="true"/>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+    </ui:composition>
+</html>

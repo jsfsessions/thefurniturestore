@@ -4,30 +4,25 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
     <h:head>
         <title>Inventory Management</title>
-
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
-
         <h:outputStylesheet library="itr" name="css/login.css"/>
     </h:head>
     <h:body>
         <ui:decorate template="../template/layout.xhtml">
-
+            <ui:param name="title" value="false"/>
             <!-- skip subtitle sections -->
             <ui:param name="subtitle" value="false"/>
-
             <!-- skip intro but define header -->
             <ui:param name="intro" value="false"/>
-
             <!-- skip mainheader -->
             <ui:param name="mainheader" value="false"/>
-
+            <ui:param name="footer" value="false"/>
             <!--OR define mainheader my removing comments -->
             <!--            <ui:define name="mainheader">
                             <h4>Vector Freight Header</h4>
@@ -35,23 +30,13 @@
 
             <!-- skip menu -->
             <ui:param name="topmenu" value="false"/>
-
             <!-- skip left and right panels (the central panel cannot be skipped) -->
             <ui:param name="leftpanel" value="false"/>
             <ui:param name="rightpanel" value="false"/>
-
             <!-- define title -->
             <ui:define name="title">
-                <h2>Inventory Turnover Ratio</h2>
+                <!--<h2>Inventory Turnover Ratio</h2>-->
             </ui:define>
-
-            <ui:remove>
-                <!-- define footer -->
-                <ui:define name="mainfooter">
-
-                </ui:define>
-            </ui:remove>
-
             <!-- define center panel content -->
             <ui:define name="centerpanel">
                 <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
@@ -60,11 +45,6 @@
                     <p:graphicImage library="itr" name="images/spinner1.gif" width="50px" height="50px"/>
                 </p:dialog>
                 <div id="credentials">
-                    <!--<p:panel style="border:1px solid grey">-->
-                    <!--<h3>Sign in</h3>-->
-                    <!--<p:accordionPanel prependId="false">-->
-                    <!--No need for feedback="true" inline="true" on password when users try to login, these are useful
-                    at user registration -->
                     <p:tabView prependId="false" widgetVar="tabWidgetVar">
                         <p:tab title="Sign in">
                             <form action="j_security_check" method="POST">
@@ -137,7 +117,7 @@
                                     <h:outputLabel for="phone" value="Phone number *:"/>
                                     <p:inputText id="phone" value="#{userSignUp.phoneNumber}" label="Phone number"
                                                  placeholder="Phone number" required="true" size="30">
-                                        <f:validator validatorId="com.itr.phoneNumberValidator" />
+                                        <!--<f:validator validatorId="phoneNumberValidator"/>-->
                                     </p:inputText>
                                     <p:message for="phone"/>
 
@@ -153,20 +133,20 @@
                                     <span>Already have an account? </span>
                                     <p:commandLink value="Sign in" type="button" onclick="PF('tabWidgetVar').select(0)"/>
                                 </p>
-                                <p>
-                                    I agree to the Company
-                                    <h:outputLink value="../terms.html" target="_blank">Terms</h:outputLink>
-                                    and
-                                    <h:outputLink value="../terms.html" target="_blank">Privacy</h:outputLink>
-                                </p>
+
+                                <ui:remove>
+                                    <p>
+                                        I agree to the Company
+                                        <h:outputLink value="../terms.html" target="_blank">Terms</h:outputLink>
+                                        and
+                                        <h:outputLink value="../terms.html" target="_blank">Privacy</h:outputLink>
+                                    </p>
+                                </ui:remove>
                             </h:form>
                         </p:tab>
                     </p:tabView>
-                    <!--</p:accordionPanel>-->
-                    <!--</p:panel>-->
                 </div>
             </ui:define>
         </ui:decorate>
     </h:body>
 </html>
-

@@ -4,23 +4,21 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Admin - Home Page</title>            
-
+        <title>Admin - Home Page</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes" />        
+        <meta name="apple-mobile-web-app-capable" content="yes" />
     </h:head>
     <h:body>
         <h1>ADMIN PAGE</h1>
-        LOGIN AS: <b>#{facesContext.externalContext.remoteUser}</b> <br/>             
+        LOGIN AS: <b>#{facesContext.externalContext.remoteUser}</b> <br/>
         NOT IMPLEMENTED :(
 
         <hr/>
         <h:form id="logoutFormId">
             <!-- REMOVE INLINE CSS AND DO IT CORRECTLY -->
-            <p:commandLink style="font-size:20px; background-color: white;" action="#{logoutBean.logoutAction}" value="Logout"/>                                    
+            <p:commandLink style="font-size:20px; background-color: white;" action="#{userLogout.logout}" value="Logout"/>
         </h:form>
     </h:body>
 </html>
-

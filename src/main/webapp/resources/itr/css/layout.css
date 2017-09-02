@@ -61,7 +61,7 @@ body {
 #topmenu {
     white-space: nowrap;
     height: 28px;   
-    background: #999;
+    /*background: #999;*/
     margin-bottom: 5px;
 }
 

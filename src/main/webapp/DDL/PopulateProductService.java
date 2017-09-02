@@ -1,16 +1,13 @@
 package com.itr.helpers;
 
-import com.itr.outlet.walmart.boundary.WalmartProductService;
 //import com.itr.entity.Product;
+import com.business.service.WalmartProductService;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
-import javax.faces.bean.ViewScoped;
-import javax.inject.Named;
 
 @Startup
 @Singleton

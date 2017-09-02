@@ -1,22 +1,9 @@
-body {
-    background-color: #FFFFFF;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: small;
-    margin-top: 0;
-    height: 100%;
-    display: block;
-    margin: 8px;
-}
+
 
 .inv-button {
     visibility: hidden;
     width: 0;
     height: 0;
-}
-
-#productTableForm img:first-child {
-    /*    width: 74px;
-        height: 90px;*/
 }
 
 .row-exp td {
@@ -116,56 +103,6 @@ button,
     padding: 10px 10px 10px 10px;
     background-color: #eee;
 }*/
-
-.dtb-chk-sze {
-    width: 15px;
-    height: 20px;
-    padding: 0px 0px 0px 0px;
-    /*font-size: 90%;*/
-    /*background-color: #eee;*/
-    /*border: 1px solid gold;*/
-}
-
-.dtb-img-col-sze {
-    width: 8%;
-    height: 8%;
-}
-
-.dtb-upc-sze {
-    width: 9%;
-}
-
-.dtb-desc-sze {
-    width: 20%;
-}
-
-.dtb-cat-sze{
-    width: 10%;
-}
-
-.dtb-bin-loc-sze{
-    width: 9%;
-}
-
-.dtb-sze-sze {
-    width: 5%;
-}
-
-.dtb-sal-sze {
-    width: 5%;
-}
-
-.dtb-col-sze {
-    width: 10%;
-}
-
-.dtb-act-dwn {
-    width: 7%;
-}
-
-#actionDiv {
-    float: left;
-}
 
 #globalFilterPanel {
     float: right;
@@ -307,10 +244,7 @@ button,
 
 
 
-#dt_mul_sel {
-    background-color: #F8F8F8;
 
-}
 
 /*dt_mul_sel .ui-button {
     background-color:#0074B8;

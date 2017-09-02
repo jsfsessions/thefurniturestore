@@ -11,6 +11,8 @@
         <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <h:outputStylesheet library="itr" name="css/grid.css" />
+        <h:outputStylesheet library="itr" name="css/layout.css"/>
+        <h:outputStylesheet library="itr" name="css/common.css"/>
         <style>
             div { text-align: center; }
             table { margin: 0 auto; }
@@ -31,12 +33,12 @@
                 <div class="ui-g-12 ui-md-12 ui-lg-12 search">
                     <h:form id="search">
                         <p:commandButton type="reset" icon="fa fa-close" />
-                        <p:inputText value="#{productsView.searchText}" placeholder="Search" />
-                        <p:splitButton value="Search All" actionListener="#{productsView.searchAll}" icon="fa fa-search"
+                        <p:inputText value="#{publicProductsBean.searchText}" placeholder="Search" />
+                        <p:splitButton value="Search All" actionListener="#{publicProductsBean.searchAll}" icon="fa fa-search"
                                        update=":navigation">
-                            <p:menuitem value="Search by category" actionListener="#{productsView.searchByCategory}"
+                            <p:menuitem value="Search by category" actionListener="#{publicProductsBean.searchByCategory}"
                                         update=":navigation"/>
-                            <p:menuitem value="Search by product name" actionListener="#{productsView.searchByName}"
+                            <p:menuitem value="Search by product name" actionListener="#{publicProductsBean.searchByName}"
                                         update=":navigation"/>
                         </p:splitButton>
                     </h:form>
@@ -52,11 +54,11 @@
             <p:outputPanel autoUpdate="true">
                 <h3>
                     <h:outputText value="No records found."
-                                  rendered="#{productsView.products.size() eq 0}" />
+                                  rendered="#{publicProductsBean.products.size() eq 0}" />
                 </h3>
 
                 <div id="productsList" class="ui-g">
-                    <ui:repeat id="products" value="#{productsView.products}" var="product">
+                    <ui:repeat id="products" value="#{publicProductsBean.products}" var="product">
                         <div class="ui-g-12 ui-md-4 ui-lg-2">
                             <p:graphicImage id="image" value="#{product.imgUrl}" width="200px" height="200px" />
                             <p>#{product.productName}</p>
@@ -69,10 +71,10 @@
                 <div class="ui-g-12 ui-md-12 ui-lg-12 search">
                     <h:form id="navigation">
                         <h:panelGrid columns="3">
-                            <p:commandButton value="Previous Page" action="#{productsView.findPreviousProducts}"
-                                             disabled="#{productsView.page eq 0}" update=":navigation" />
-                            <p:commandButton value="Next Page" action="#{productsView.findNextProducts}" update=":navigation"
-                                             disabled="#{productsView.products.size() lt productsView.pageSize}"/>
+                            <p:commandButton value="Previous Page" action="#{publicProductsBean.findPreviousProducts}"
+                                             disabled="#{publicProductsBean.page eq 0}" update=":navigation" />
+                            <p:commandButton value="Next Page" action="#{publicProductsBean.findNextProducts}" update=":navigation"
+                                             disabled="#{publicProductsBean.products.size() lt publicProductsBean.pageSize}"/>
                         </h:panelGrid>
                     </h:form>
                 </div>

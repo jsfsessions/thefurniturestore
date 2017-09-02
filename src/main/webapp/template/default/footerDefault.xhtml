@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -6,16 +6,13 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:composition>
-        <ui:remove>
-            <!--<p style="border:1px solid black;">this is the footer</p>-->
-        </ui:remove>
         <div class="subcontainers mainfooter">
-            <h:panelGrid columns="2">  
+            <h:panelGrid columns="2">
                 <h:outputText value="&#169; 20#{now.year - 100} Inventory Turnover Ratio">
                     <f:convertDateTime pattern="MM/dd/yyyy" type="date" />
                 </h:outputText>
-                <a href="http://www.investopedia.com/terms/a/assetturnover.asp">About</a> 
+                <a href="http://www.investopedia.com/terms/a/assetturnover.asp">About</a>
             </h:panelGrid>
         </div>
-    </ui:composition>    
+    </ui:composition>
 </html>

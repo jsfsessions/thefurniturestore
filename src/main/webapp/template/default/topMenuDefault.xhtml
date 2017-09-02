@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
+<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -7,15 +7,14 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition>
-        <!--<p style="border:1px solid black;">top menu default</p>-->
         <c:if test="${not empty items}">
-            <ul>                
+            <ul>
                 <ui:repeat value="${fn:split(items, ',')}" var="t">
-                    <li>                        
-                        <h:link value="${fn:substringBefore(t, '#')}" outcome="${fn:substringAfter(t, '#')}"/>                        
+                    <li>
+                        <h:link value="${fn:substringBefore(t, '#')}" outcome="${fn:substringAfter(t, '#')}"/>
                     </li>
                 </ui:repeat>
-            </ul>            
+            </ul>
         </c:if>
-    </ui:composition>   
+    </ui:composition>
 </html>
