@@ -108,4 +108,31 @@ public class EmployeeService {
         TypedQuery<Employee> tq = em.createQuery(cq);
         return tq.getResultList();
     }
+
+    public int deleteEmployees(List<Employee> employees) {
+
+        int countDeletedRecords = 0;
+
+        Query deleteFromGrouptable = em.createNativeQuery("DELETE FROM grouptable WHERE userid = :userid");
+        Query deleteFromUsertable = em.createNativeQuery("DELETE FROM usertable WHERE userid = :userid");
+
+        for (Employee e : employees) {
+            // Remove employee
+            Employee emp = em.find(Employee.class, e.getId());
+            em.remove(emp);
+            LOGGER.info("Employee successfully removed..");
+
+            // Delete his credentials also
+            // Pass parameters
+            deleteFromGrouptable.setParameter("userid", e.getEmail());
+            deleteFromUsertable.setParameter("userid", e.getEmail());
+
+            // Execute DELETE statements
+            countDeletedRecords += deleteFromGrouptable.executeUpdate();
+            countDeletedRecords += deleteFromUsertable.executeUpdate();
+
+            LOGGER.info("Employee credentials successfully removed..");
+        }
+        return countDeletedRecords;
+    }
 }

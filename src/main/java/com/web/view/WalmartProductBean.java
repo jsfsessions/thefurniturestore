@@ -2,6 +2,7 @@ package com.web.view;
 
 import com.business.entity.Employee;
 import com.business.entity.WalmartProduct;
+import com.business.service.EmployeeService;
 import com.business.service.MessageService;
 import com.business.service.WalmartProductService;
 import com.business.service.ZipcodeService;
@@ -38,8 +39,14 @@ public class WalmartProductBean implements Serializable {
     @Inject
     private ProductCount productCount;
 
+    @Inject
+    private EmployeesBean employeesBean;
+
     @EJB
     private MessageService messageService;
+
+    @EJB
+    private EmployeeService employeeService;
 
     @EJB
     private ZipcodeService zipcodeService;
@@ -257,6 +264,26 @@ public class WalmartProductBean implements Serializable {
             // Reset selections
             selectedWalmartProducts = new ArrayList<>();
             selectedEmployees = new ArrayList<>();
+        }
+    }
+
+    public void deleteEmployees() {
+        if (selectedEmployees.isEmpty()) {
+            Faces.getContext().addMessage(null, new FacesMessage("Select the employees that you wish to be deleted."));
+        } else {
+
+            int employeesDeleted = employeeService.deleteEmployees(selectedEmployees) / 2;
+
+            if (selectedEmployees.size() == employeesDeleted) {
+                Faces.getContext().addMessage(null, new FacesMessage("Selected employees have been successfully deleted."));
+            } else {
+                Faces.getContext().addMessage(null, new FacesMessage("An error occured and some employees may not have been deleted."));
+            }
+
+            Ajax.update("emp-frm");
+            // Reset selections and employees list kept in session
+            selectedEmployees = new ArrayList<>();
+            employeesBean.setEmployees(null);
         }
     }
 }
