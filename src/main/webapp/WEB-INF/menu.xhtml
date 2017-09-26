@@ -1,0 +1,110 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/paradise">
+
+    <div class="layout-menu-wrapper #{guestPreferences.darkMenu ? 'layout-menu-dark' : null}">
+        <div class="nano">
+            <div class="nano-content sidebar-scroll-content">
+
+                <div class="layout-menu-container">
+                    <p:accordionPanel activeIndex="null" prependId="false">
+                        <p:tab title="Stores" titleStyle="font-weight:normal;">
+                            <h:form id="storeForm">
+                                <div class="ui-fluid">
+                                    <div class="ui-g">
+                                        <div class="ui-g-12">
+                                            <p:selectOneMenu value="#{walmartProductBean.selectedZipcode}" var="zipcode"
+                                                             filter="true" required="true" requiredMessage="Store selection is required."
+                                                             widgetVar="storeWV">
+                                                <f:selectItem itemLabel="Make a selection" noSelectionOption="true"/>
+                                                <f:selectItems value="#{walmartProductBean.zipcodes}" var="z" itemLabel="#{z.zip}" itemValue="#{z.zip}"/>
+                                                <f:param name="whereto" value="zipcode.zip"/>
+                                            </p:selectOneMenu>
+
+                                            <p:commandButton id="shp-btn" value="Ship" actionListener="#{walmartProductBean.updateStoreAction()}"
+                                                             onclick="submitTableForm();" icon="fa fa-truck"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </p:tab>
+
+                        <p:tab title="Sales Team" titleStyle="font-weight:normal;">
+                            <h:form id="emp-frm" rendered="#{request.isUserInRole('adminRole')}">
+                                <div class="ui-fluid">
+                                    <div class="ui-g">
+                                        <div class="ui-g-12">
+                                            <p:dataTable id="mul-sel-dat" var="employee" value="#{employeesBean.employees}" rowKey="#{employee.id}"
+                                                         rowSelectMode="checkbox" selection="#{walmartProductBean.selectedEmployees}"
+                                                         scrollable="true" scrollHeight="150">
+
+                                                <p:column selectionMode="multiple" style="width:16px;"/>
+
+                                                <p:column headerText="Name" filterBy="#{employee.lastname}"
+                                                          sortBy="#{employee.lastname}" filterMatchMode="contains">
+                                                    <h:outputText value="#{fn:substring(employee.firstname, 0, 1)} #{employee.lastname}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+
+                                        <div class="ui-g-6 ui-md-6">
+                                            <p:commandButton value="Send SMS" actionListener="#{walmartProductBean.sendSMS()}"
+                                                             onclick="submitTableForm();"/>
+                                        </div>
+                                        <div class="ui-g-6">
+                                            <p:commandButton value="Delete Empl." actionListener="#{walmartProductBean.deleteEmployee()}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </h:form>
+                        </p:tab>
+                    </p:accordionPanel>
+
+                    <h:form id="menuform">
+                        <pa:menu>
+                            <p:submenu id="manager" label="Selling Manager" icon="fa fa-user">
+                                <p:menuitem id="scheduled" icon="fa fa-bars"
+                                            outcome="/control/scheduled?faces-redirect=true"
+                                            value="Scheduled (#{productCount.counts.get(0)})"
+                                            rendered="#{request.isUserInRole('adminRole')}"/>
+                                <p:menuitem id="active" icon="fa fa-bars"
+                                            outcome="/control/active?faces-redirect=true"
+                                            value="Active (#{productCount.counts.get(1)})"/>
+                                <p:menuitem id="sold" icon="fa fa-bars"
+                                            outcome="/control/sold?faces-redirect=true"
+                                            value="Sold (#{productCount.counts.get(2)})"/>
+                                <p:menuitem id="aging" icon="fa fa-bars"
+                                            outcome="/control/aging?faces-redirect=true"
+                                            value="Aging (#{productCount.counts.get(3)})"/>
+                                <p:menuitem id="assemble" icon="fa fa-bars"
+                                            outcome="/control/assemble?faces-redirect=true"
+                                            value="Assemble (#{productCount.counts.get(4)})"/>
+                                <p:menuitem id="partial" icon="fa fa-bars"
+                                            outcome="/control/partial?faces-redirect=true"
+                                            value="Partial (#{productCount.counts.get(5)})"/>
+                                <p:menuitem id="damaged" icon="fa fa-bars"
+                                            outcome="/control/damaged?faces-redirect=true"
+                                            value="Damaged (#{productCount.counts.get(6)})"/>
+                                <p:menuitem id="shrinkage" icon="fa fa-bars"
+                                            outcome="/control/shrinkage?faces-redirect=true"
+                                            value="Shrinkage (#{productCount.counts.get(7)})"/>
+                            </p:submenu>
+                            <p:submenu id="export" label="Sales Export" icon="fa fa-files-o">
+                                <p:menuitem id="salesReport" icon="fa fa-bars"
+                                            outcome="/control/salesReport?faces-redirect=true"
+                                            value="Sales Report"/>
+                            </p:submenu>
+                        </pa:menu>
+                    </h:form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</ui:composition>

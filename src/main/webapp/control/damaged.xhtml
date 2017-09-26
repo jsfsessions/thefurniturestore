@@ -1,33 +1,15 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Inventory Control - Damaged</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-    </h:head>
-    <h:body>
-        <ui:decorate template="../template/layout.xhtml">
-            <ui:param name="title" value="true"/>
-            <ui:param name="subtitle" value="false"/>
-            <ui:param name="mainheader" value="false"/>
-            <ui:param name="topmenu" value="true"/>
-            <ui:param name="leftpanel" value="true"/>
-            <ui:param name="rightpanel" value="true"/>
-            <ui:param name="centerpanel" value="true"/>
-            <ui:param name="mainfooter" value="true"/>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/WEB-INF/template.xhtml">
 
-            <ui:define name="centerpanel">
+    <ui:define name="title">Inventory Control - Damaged</ui:define>
 
-                <ui:insert name="productTableForm">
-                    <ui:include src="/control/productTable.xhtml" />
-                </ui:insert>
+    <ui:define name="content">
 
-            </ui:define>
-        </ui:decorate>
-    </h:body>
-</html>
+        <ui:insert name="productTableForm">
+            <ui:include src="/control/productTable.xhtml" />
+        </ui:insert>
+
+    </ui:define>
+
+</ui:composition>

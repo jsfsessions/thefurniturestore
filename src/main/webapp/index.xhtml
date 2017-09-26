@@ -1,84 +1,107 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      lang="en">
+
     <h:head>
-        <title>Inventory Management</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <h:outputStylesheet library="itr" name="css/grid.css" />
-        <h:outputStylesheet library="itr" name="css/layout.css"/>
-        <h:outputStylesheet library="itr" name="css/common.css"/>
-        <style>
-            div { text-align: center; }
-            table { margin: 0 auto; }
-            .search input { width: 80% !important; }
-            #search div button:first-child { width: 10.5em !important; }
-            #productsList div { border: 1px solid #fafafa; }
-        </style>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+        </f:facet>
+        <title><ui:insert name="title">Inventory Management</ui:insert></title>
+        <h:outputScript name="js/nanoscroller.js" library="paradise-layout"/>
+        <h:outputScript name="js/layout.js" library="paradise-layout"/>
     </h:head>
+
     <h:body>
-        <div class="ui-grid">
-            <div class="ui-g">
-                <div class="ui-g-6 ui-md-11 ui-lg-11"></div>
-                <div class="ui-g-6 ui-md-1 ui-lg-1">
-                    <h:link value="Login" outcome="control/scheduled.xhtml" />
-                </div>
-            </div>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-12 ui-lg-12 search">
-                    <h:form id="search">
-                        <p:commandButton type="reset" icon="fa fa-close" />
-                        <p:inputText value="#{publicProductsBean.searchText}" placeholder="Search" />
-                        <p:splitButton value="Search All" actionListener="#{publicProductsBean.searchAll}" icon="fa fa-search"
-                                       update=":navigation">
-                            <p:menuitem value="Search by category" actionListener="#{publicProductsBean.searchByCategory}"
-                                        update=":navigation"/>
-                            <p:menuitem value="Search by product name" actionListener="#{publicProductsBean.searchByName}"
-                                        update=":navigation"/>
-                        </p:splitButton>
-                    </h:form>
-                </div>
+        <div class="layout-wrapper #{guestPreferences.slimMenu ? 'layout-menu-slim' : (guestPreferences.overlayMenu ? 'layout-menu-overlay' : 'layout-menu-static')}">
+            <div class="topbar">
+                <a href="#" class="topbar-logo">
+                    <p:graphicImage style="border:0px;" library="itr" name="images/logo-black.png"/>
+                </a>
+
+                <h:link id="user-display" outcome="control/scheduled.xhtml">
+                    <span class="username">Inventory Control</span>
+                </h:link>
             </div>
 
-            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-            <p:dialog widgetVar="statusDialog" modal="true" draggable="true" closable="false" resizable="false"
-                      showHeader="false" visible="false">
-                <p:graphicImage library="itr" name="images/spinner1.gif" width="50px" height="50px"/>
-            </p:dialog>
+            <div class="layout-main">
+                <div class="layout-content">
 
-            <p:outputPanel autoUpdate="true">
-                <h3>
-                    <h:outputText value="No records found."
-                                  rendered="#{publicProductsBean.products.size() eq 0}" />
-                </h3>
+                    <div class="card">
+                        <h:form id="search">
+                            <p:commandButton type="reset" icon="fa fa-close"/>
+                            <p:inputText value="#{publicProductsBean.searchText}" placeholder="Search"/>
+                            <p:splitButton value="Search All" actionListener="#{publicProductsBean.searchAll}" icon="fa fa-search"
+                                           update=":navigation">
+                                <p:menuitem value="Search by category" actionListener="#{publicProductsBean.searchByCategory}"
+                                            update=":navigation"/>
+                                <p:menuitem value="Search by product name" actionListener="#{publicProductsBean.searchByName}"
+                                            update=":navigation"/>
+                            </p:splitButton>
+                        </h:form>
+                    </div>
 
-                <div id="productsList" class="ui-g">
-                    <ui:repeat id="products" value="#{publicProductsBean.products}" var="product">
-                        <div class="ui-g-12 ui-md-4 ui-lg-2">
-                            <p:graphicImage id="image" value="#{product.imgUrl}" width="200px" height="200px" />
-                            <p>#{product.productName}</p>
+                    <p:outputPanel autoUpdate="true">
+                        <h3>
+                            <h:outputText value="No records found." rendered="#{publicProductsBean.products.size() eq 0}"/>
+                        </h3>
+
+                        <div id="productsList" class="ui-g">
+                            <ui:repeat id="products" value="#{publicProductsBean.products}" var="product">
+                                <div class="ui-g-12 ui-md-4 ui-lg-2">
+
+                                    <div class="card">
+                                        <p:graphicImage id="image" value="#{product.imgUrl}" width="200px" height="200px"/>
+                                        <p>#{product.productName}</p>
+                                    </div>
+
+                                </div>
+                            </ui:repeat>
                         </div>
-                    </ui:repeat>
-                </div>
-            </p:outputPanel>
+                    </p:outputPanel>
 
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-12 ui-lg-12 search">
-                    <h:form id="navigation">
-                        <h:panelGrid columns="3">
-                            <p:commandButton value="Previous Page" action="#{publicProductsBean.findPreviousProducts}"
-                                             disabled="#{publicProductsBean.page eq 0}" update=":navigation" />
-                            <p:commandButton value="Next Page" action="#{publicProductsBean.findNextProducts}" update=":navigation"
-                                             disabled="#{publicProductsBean.products.size() lt publicProductsBean.pageSize}"/>
-                        </h:panelGrid>
-                    </h:form>
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div class="card">
+                                <h:form id="navigation">
+                                    <h:panelGrid columns="3">
+                                        <p:commandButton value="Previous Page" action="#{publicProductsBean.findPreviousProducts}"
+                                                         disabled="#{publicProductsBean.page eq 0}" update=":navigation"/>
+                                        <p:commandButton value="Next Page" action="#{publicProductsBean.findNextProducts}" update=":navigation"
+                                                         disabled="#{publicProductsBean.products.size() lt publicProductsBean.pageSize}"/>
+                                    </h:panelGrid>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+                <ui:include src="./WEB-INF/footer.xhtml"/>
+
             </div>
         </div>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
+        <p:dialog widgetVar="statusDialog" modal="true" closable="false" resizable="false" showHeader="false">
+            <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+        </p:dialog>
+
+        <h:outputStylesheet name="css/nanoscroller.css" library="paradise-layout"/>
+        <h:outputStylesheet name="css/animate.css" library="paradise-layout"/>
+        <h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css" library="paradise-layout"/>
+        <style>
+            .layout-wrapper.layout-menu-static .layout-content { margin-left:0; }
+            .layout-wrapper.layout-menu-static .layout-footer { margin-left:0; }
+            .card > img { margin:0 auto; display:block; }
+            #search, .ui-inputfield { width:80%;margin:0 auto; }
+        </style>
+
     </h:body>
 </html>

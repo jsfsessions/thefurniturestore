@@ -235,7 +235,7 @@ public class WalmartProductBean implements Serializable {
 
     public void updateStoreAction() {
         if (selectedWalmartProducts.isEmpty()) {
-            Faces.getContext().addMessage(null, new FacesMessage("Select from the table the products that need shipping"
+            Faces.getContext().addMessage(null, new FacesMessage("Select from the table the product(s) that need shipping"
                     + " and then click the 'Ship' button."));
         } else {
             walmartProductService.updateStore(selectedWalmartProducts, selectedZipcode);
@@ -250,14 +250,14 @@ public class WalmartProductBean implements Serializable {
 
     public void sendSMS() {
         if (selectedEmployees.isEmpty() || selectedWalmartProducts.isEmpty()) {
-            Faces.getContext().addMessage(null, new FacesMessage("Select the products to be sent via SMS "
-                    + " and the employees to receive it, and then click the 'Send SMS' button."));
+            Faces.getContext().addMessage(null, new FacesMessage("Select the product(s) to be sent via SMS "
+                    + " and the employee(s) to receive it, and then click the 'Send SMS' button."));
         } else {
 
             messageService.sendMessages(selectedEmployees, selectedWalmartProducts);
 
             Faces.getContext().addMessage(null, new FacesMessage("Sending " + selectedWalmartProducts.size() + " SMS to "
-                    + selectedEmployees.size() + " employees.. This may take around "
+                    + selectedEmployees.size() + " employee(s).. This may take around "
                     + (selectedWalmartProducts.size() * selectedEmployees.size()) + " seconds.."));
 
             Ajax.update("emp-frm", "productTableForm:mul-sel-dat");
@@ -267,17 +267,17 @@ public class WalmartProductBean implements Serializable {
         }
     }
 
-    public void deleteEmployees() {
+    public void deleteEmployee() {
         if (selectedEmployees.isEmpty()) {
-            Faces.getContext().addMessage(null, new FacesMessage("Select the employees that you wish to be deleted."));
+            Faces.getContext().addMessage(null, new FacesMessage("Select the employee(s) that you wish to be deleted."));
         } else {
 
             int employeesDeleted = employeeService.deleteEmployees(selectedEmployees) / 2;
 
             if (selectedEmployees.size() == employeesDeleted) {
-                Faces.getContext().addMessage(null, new FacesMessage("Selected employees have been successfully deleted."));
+                Faces.getContext().addMessage(null, new FacesMessage("Selected employee(s) have been successfully deleted."));
             } else {
-                Faces.getContext().addMessage(null, new FacesMessage("An error occured and some employees may not have been deleted."));
+                Faces.getContext().addMessage(null, new FacesMessage("An error occured and employee(s) may not have been deleted."));
             }
 
             Ajax.update("emp-frm");

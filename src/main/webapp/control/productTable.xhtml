@@ -1,35 +1,16 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
 
-    <ui:composition>
+    <p:growl id="messages" showDetail="false" autoUpdate="true"/>
 
-        <!-- Common page fragment included in all /control/*.xhtml pages -->
-        <h:outputStylesheet library="itr" name="css/grid.css"/>
+    <h:form id="productTableForm">
+        <div class="card">
+            <p:commandButton id="tableDataOnFirstLoad" action="scheduled?faces-redirect=true" style="visibility:hidden;float:left;width:0;height:0;"/>
+            <p:commandButton id="submitBtn" style="visibility:hidden;float:left;width:0;height:0;"/>
 
-        <script>
-            function reload() {
-                document.getElementById("productTableForm:tableDataOnFirstLoad").click();
-            }
-            function submitTableForm() {
-                document.getElementById("productTableForm:submitBtn").click();
-            }
-        </script>
-
-        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()"/>
-        <p:dialog widgetVar="statusDialog" modal="true" closable="false" resizable="false" showHeader="false">
-            <p:graphicImage library="itr" name="images/spinner1.gif" width="50px" height="50px"/>
-        </p:dialog>
-
-        <p:growl id="messages" showDetail="false" autoUpdate="true"/>
-
-        <h:form id="productTableForm">
-            <p:commandButton id="tableDataOnFirstLoad" action="scheduled?faces-redirect=true" styleClass="inv-button"/>
-            <p:commandButton id="submitBtn" styleClass="inv-button"/>
             <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable"
                          value="#{walmartProductBean.lazyModel}" editable="true" lazy="true" rowKey="#{product.id}"
                          selection="#{walmartProductBean.selectedWalmartProducts}" rowSelectMode="checkbox"
@@ -39,7 +20,7 @@
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 
                 <p:ajax event="rowEditInit" listener="#{walmartProductBean.onRowEditInit}"/>
-                <p:ajax event="rowEdit" listener="#{walmartProductBean.onRowEdit}" update=":accordionPanel"/>
+                <p:ajax event="rowEdit" listener="#{walmartProductBean.onRowEdit}" update=":menuform"/>
 
                 <f:facet name="header">
                     <p:outputPanel>
@@ -50,7 +31,7 @@
                     </p:outputPanel>
                 </f:facet>
 
-                <p:column selectionMode="multiple" style="width:20px"/>
+                <p:column selectionMode="multiple" style="width:18px"/>
 
                 <p:column style="width:16px">
                     <p:rowToggler />
@@ -83,7 +64,7 @@
                             <h:outputText value="#{product.productName}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputTextarea value="#{product.productName}" cols="15" rows="6"/>
+                            <p:inputTextarea value="#{product.productName}" cols="20" rows="6"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -181,35 +162,44 @@
                     </div>
                 </p:rowExpansion>
             </p:dataTable>
+        </div>
+    </h:form>
+
+    <p:dialog id="galeriaDialogId" widgetVar="galeriaDialog" position="center" width="530" height="420" modal="true">
+        <p:galleria value="#{walmartProductBean.galeria}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
+            <p:graphicImage value="#{image}"/>
+        </p:galleria>
+    </p:dialog>
+
+    <p:dialog widgetVar="soldInfoDlg" header="Enter sold information" modal="true"
+              closable="false" resizable="false">
+        <h:form id="confirmSold">
+            <h:panelGrid columns="2">
+                <h:outputLabel for="soldBy" value="Sold by *:"/>
+                <p:selectOneMenu id="soldBy" value="#{walmartProductBean.soldBy}" required="true">
+                    <f:selectItem itemLabel="Select an employee" noSelectionOption="true"/>
+                    <f:selectItems value="#{employeesBean.employees}" var="e"
+                                   itemLabel="#{e.lastname}" itemValue="#{e.lastname}"/>
+                </p:selectOneMenu>
+
+                <h:outputLabel for="soldDate" value="Sold date *:"/>
+                <p:calendar id="soldDate" value="#{walmartProductBean.soldDate}"
+                            placeholder="Enter sold date" required="true" size="20"
+                            pattern="MM/dd/yyyy HH:mm:ss"/>
+
+                <p:commandButton value="Save" actionListener="#{walmartProductBean.saveSoldInformations}"
+                                 update=":confirmSold" validateClient="true"/>
+            </h:panelGrid>
         </h:form>
+    </p:dialog>
 
-        <p:dialog id="galeriaDialogId" widgetVar="galeriaDialog" position="center" width="620" height="533" modal="true">
-            <p:galleria value="#{walmartProductBean.galeria}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
-                <p:graphicImage value="#{image}"/>
-            </p:galleria>
-        </p:dialog>
+    <script>
+        function reload() {
+            document.getElementById("productTableForm:tableDataOnFirstLoad").click();
+        }
+        function submitTableForm() {
+            document.getElementById("productTableForm:submitBtn").click();
+        }
+    </script>
 
-        <p:dialog widgetVar="soldInfoDlg" header="Enter sold information" modal="true"
-                  closable="false" resizable="false">
-            <h:form id="confirmSold">
-                <h:panelGrid columns="2">
-                    <h:outputLabel for="soldBy" value="Sold by *:"/>
-                    <p:selectOneMenu id="soldBy" value="#{walmartProductBean.soldBy}" required="true" style="width:168px;">
-                        <f:selectItem itemLabel="Select an employee" noSelectionOption="true"/>
-                        <f:selectItems value="#{employeesBean.employees}" var="e"
-                                       itemLabel="#{e.lastname}" itemValue="#{e.lastname}"/>
-                    </p:selectOneMenu>
-
-                    <h:outputLabel for="soldDate" value="Sold date *:"/>
-                    <p:calendar id="soldDate" value="#{walmartProductBean.soldDate}"
-                                placeholder="Enter sold date" required="true" size="30"
-                                pattern="MM/dd/yyyy HH:mm:ss"/>
-
-                    <p:commandButton value="Save" actionListener="#{walmartProductBean.saveSoldInformations}"
-                                     update=":confirmSold" validateClient="true"/>
-                </h:panelGrid>
-            </h:form>
-        </p:dialog>
-
-    </ui:composition>
-</html>
+</ui:composition>

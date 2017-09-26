@@ -1,152 +1,74 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
     <h:head>
-        <title>Inventory Management</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <h:outputStylesheet library="itr" name="css/login.css"/>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+        </f:facet>
+        <title>Inventory Management - Login</title>
     </h:head>
-    <h:body>
-        <ui:decorate template="../template/layout.xhtml">
-            <ui:param name="title" value="false"/>
-            <!-- skip subtitle sections -->
-            <ui:param name="subtitle" value="false"/>
-            <!-- skip intro but define header -->
-            <ui:param name="intro" value="false"/>
-            <!-- skip mainheader -->
-            <ui:param name="mainheader" value="false"/>
-            <ui:param name="footer" value="false"/>
-            <!--OR define mainheader my removing comments -->
-            <!--            <ui:define name="mainheader">
-                            <h4>Vector Freight Header</h4>
-                        </ui:define>   -->
 
-            <!-- skip menu -->
-            <ui:param name="topmenu" value="false"/>
-            <!-- skip left and right panels (the central panel cannot be skipped) -->
-            <ui:param name="leftpanel" value="false"/>
-            <ui:param name="rightpanel" value="false"/>
-            <!-- define title -->
-            <ui:define name="title">
-                <!--<h2>Inventory Turnover Ratio</h2>-->
-            </ui:define>
-            <!-- define center panel content -->
-            <ui:define name="centerpanel">
-                <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-                <p:dialog widgetVar="statusDialog" modal="true" draggable="true" closable="false" resizable="false"
-                          showHeader="false" visible="false">
-                    <p:graphicImage library="itr" name="images/spinner1.gif" width="50px" height="50px"/>
-                </p:dialog>
-                <div id="credentials">
-                    <p:tabView prependId="false" widgetVar="tabWidgetVar">
-                        <p:tab title="Sign in">
-                            <form action="j_security_check" method="POST">
-                                <h:panelGrid columns="2">
-                                    <label>E-mail *:</label>
-                                    <p:inputText id="j_username"
-                                                 type="email"
-                                                 placeholder="Email"
-                                                 required="true"
-                                                 pt:name="j_username"
-                                                 pt:required="true"/>
+    <h:body styleClass="login-body">
 
-                                    <label>Password *:</label>
-                                    <p:password id="j_password"
-                                                placeholder="Password"
-                                                required="true"
-                                                pt:name="j_password"
-                                                pt:required="true"/>
+        <form action="j_security_check" method="POST">
+            <div class="login-panel ui-fluid">
+                <div class="ui-g">
 
-                                    <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
-                                            type="submit" name="submit">
-                                        <span class="ui-button-text ui-c">Login</span>
-                                    </button>
-                                </h:panelGrid>
-                            </form>
-                        </p:tab>
+                    <div class="ui-g-12 logo-container">
+                        <p:graphicImage name="images/logo-black.png" library="itr" styleClass="logo"/>
+                        <p:graphicImage name="images/login/icon-login.png" library="paradise-layout" styleClass="login-icon"/>
+                        <h2>Sign In</h2>
+                    </div>
 
-                        <p:tab title="Sign up">
-                            <h:form id="signup" prependId="false">
-                                <p:messages globalOnly="true" showDetail="true" showSummary="false"/>
-                                <p:tooltip id="toolTipFocus" for="phone" showEvent="focus" hideEvent="blur">
-                                    <strong>Examples:</strong>
-                                    <p>(734) 555 1212</p>
-                                    <p>734 555 1212</p>
-                                    <p>734-555-1212</p>
-                                    <p>7345551212</p>
-                                </p:tooltip>
-                                <h:panelGrid columns="1">
-                                    <h:outputLabel for="firstname" value="First name *:"/>
-                                    <p:inputText id="firstname" value="#{userSignUp.firstname}" label="First name"
-                                                 placeholder="First name" required="true" size="30"/>
-                                    <p:message for="firstname"/>
+                    <div class="ui-g-12">
+                        <label>E-mail *:</label>
+                        <div class="input-wrapper">
+                            <p:inputText id="j_username"
+                                         type="email"
+                                         placeholder="Email"
+                                         required="true"
+                                         pt:name="j_username"
+                                         pt:required="true"/>
+                            <i class="fa fa-user"/>
+                        </div>
+                    </div>
 
-                                    <h:outputLabel for="lastname" value="Last name *:"/>
-                                    <p:inputText id="lastname" value="#{userSignUp.lastname}" label="Last name"
-                                                 placeholder="Last name" required="true" size="30"/>
-                                    <p:message for="lastname"/>
+                    <div class="ui-g-12">
+                        <label>Password *:</label>
+                        <div class="input-wrapper">
+                            <p:password id="j_password"
+                                        placeholder="Password"
+                                        required="true"
+                                        pt:name="j_password"
+                                        pt:required="true"/>
+                            <i class="fa fa-lock"/>
+                        </div>
+                    </div>
 
-                                    <h:outputLabel for="username" value="User name *:"/>
-                                    <p:inputText id="username" value="#{userSignUp.username}" label="User name"
-                                                 placeholder="User name" required="true" size="30"/>
-                                    <p:message for="username"/>
+                    <div class="ui-g-12 button-container">
+                        <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                type="submit" name="submit">
+                            <span class="ui-button-text ui-c">Login</span>
+                        </button>
 
-                                    <h:outputLabel for="password" value="Password *:"/>
-                                    <p:password id="password" value="#{userSignUp.password}" feedback="true" inline="true"
-                                                placeholder="Password" match="confirmPassword" label="Password"
-                                                required="true" size="30"/>
-                                    <p:message for="password"/>
-                                    <h:outputLabel for="confirmPassword" value="Confirm password *:"/>
-                                    <p:password id="confirmPassword" value="#{userSignUp.password}"
-                                                placeholder="Confirm password" label="confirm password"
-                                                required="true" size="30"/>
-                                    <p:message for="confirmPassword"/>
+                        <p style="text-align:center;">
+                            <span>Need an account? </span>
+                            <h:link value="Sign Up" outcome="signup"/>
+                        </p>
+                    </div>
 
-                                    <h:outputLabel for="email" value="Email address *:"/>
-                                    <p:inputText id="email" value="#{userSignUp.email}" label="Email address"
-                                                 placeholder="Email address" required="true" size="30"/>
-                                    <p:message for="email"/>
-
-                                    <h:outputLabel for="phone" value="Phone number *:"/>
-                                    <p:inputText id="phone" value="#{userSignUp.phoneNumber}" label="Phone number"
-                                                 placeholder="Phone number" required="true" size="30">
-                                        <!--<f:validator validatorId="phoneNumberValidator"/>-->
-                                    </p:inputText>
-                                    <p:message for="phone"/>
-
-                                    <h:outputLabel for="address" value="Address *:"/>
-                                    <p:inputTextarea id="address" value="#{userSignUp.address}" label="Address"
-                                                     placeholder="Address" required="true" cols="30"/>
-                                    <p:message for="address"/>
-
-                                    <p:commandButton value="Sign up" action="#{userSignUp.signUpAction()}"
-                                                     validateClient="true" update="signup"/>
-                                </h:panelGrid>
-                                <p>
-                                    <span>Already have an account? </span>
-                                    <p:commandLink value="Sign in" type="button" onclick="PF('tabWidgetVar').select(0)"/>
-                                </p>
-
-                                <ui:remove>
-                                    <p>
-                                        I agree to the Company
-                                        <h:outputLink value="../terms.html" target="_blank">Terms</h:outputLink>
-                                        and
-                                        <h:outputLink value="../terms.html" target="_blank">Privacy</h:outputLink>
-                                    </p>
-                                </ui:remove>
-                            </h:form>
-                        </p:tab>
-                    </p:tabView>
                 </div>
-            </ui:define>
-        </ui:decorate>
+            </div>
+        </form>
+
+        <h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css" library="paradise-layout"/>
+
     </h:body>
 </html>

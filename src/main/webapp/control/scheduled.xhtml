@@ -1,92 +1,74 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Inventory Control - Scheduled</title>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Inventory Control - Scheduled</ui:define>
+
+    <ui:define name="content">
+
+        <p:dialog id="exceptionDialog" position="center" header="Exception occured!" widgetVar="exceptionDialog" height="100px">
+            <strong>Error occurred during processing files !</strong>
+        </p:dialog>
+
+        <div class="card">
+            <h:panelGrid columns="3" rendered="#{request.isUserInRole('adminRole')}">
+                <h:form id="dt_mul_sel" enctype="multipart/form-data">
+                    <p:toolbar>
+                        <f:facet name="left">
+                            <h:panelGrid columns="4">
+                                <ui:remove>
+                                    <p:menuButton id="createListBtn" value="Create listing">
+                                        <p:menuitem value="Single listing" actionListener="#{menuView.save}"
+                                                    update="messages" icon="ui-icon-disk"/>
+                                    </p:menuButton>
+                                    <span class="ui-separator">
+                                        <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                    </span>
+                                </ui:remove>
+                                <!--file upload-->
+                                <p:fileUpload id="up-fileInp" fileUploadListener="#{proformaFileHandlerBean.uploadProforma}"
+                                              mode="advanced" multiple="true"
+                                              onstart="PF('processButton').disable();"
+                                              oncomplete="PF('processButton').enable();"
+                                              update="messages" sizeLimit="2097152"
+                                              fileLimit="300" allowTypes="/(\.|\/)(xls|xlsx)$/"
+                                              dragDropSupport="true"
+                                              widgetVar="uploadWV"/>
+                                <span class="ui-separator">
+                                    <span class="ui-icon ui-icon-grip-dotted-vertical" />
+                                </span>
+                            </h:panelGrid>
+                        </f:facet>
+                    </p:toolbar>
+                </h:form>
+
+                <h:form id="processProforma">
+                    <p:commandButton value="Process the uploaded files" oncomplete="reload();"
+                                     actionListener="#{proformaFileHandlerBean.processProforma()}"
+                                     onclick="PF('processButton').disable();disableChoosing();PF('pbAjax').start();"
+                                     widgetVar="processButton" />
+                    <p:progressBar widgetVar="pbAjax" ajax="true" value="#{progressBarBean.progress}"
+                                   labelTemplate="{value}%" global="false">
+                        <f:param name="value" value="value"/>
+                    </p:progressBar>
+                </h:form>
+            </h:panelGrid>
+        </div>
+
+        <ui:insert name="productTableForm">
+            <ui:include src="/control/productTable.xhtml" />
+        </ui:insert>
+
         <script>
             function disableChoosing() {
                 PF('uploadWV').disableButton(PF('uploadWV').chooseButton);
                 PF('uploadWV').chooseButton.find('input[type="file"]').attr('disabled', 'disabled');
             }
         </script>
-    </h:head>
-    <h:body>
-        <ui:decorate template="../template/layout.xhtml">
-            <ui:param name="title" value="true"/>
-            <ui:param name="subtitle" value="false"/>
-            <ui:param name="mainheader" value="false"/>
-            <ui:param name="topmenu" value="true"/>
-            <ui:param name="leftpanel" value="true"/>
-            <ui:param name="rightpanel" value="true"/>
-            <ui:param name="centerpanel" value="true"/>
-            <ui:param name="mainfooter" value="true"/>
 
-            <ui:define name="centerpanel">
-                <div id="schDiv">
-                    <p:dialog id="exceptionDialog" position="center" header="Exception occured!" widgetVar="exceptionDialog" height="100px">
-                        <strong>Error occurred during processing files !</strong>
-                    </p:dialog>
+    </ui:define>
 
-                    <h:panelGrid columns="3" rendered="#{request.isUserInRole('adminRole')}">
-                        <h:form id="dt_mul_sel" enctype="multipart/form-data">
-                            <p:toolbar>
-                                <f:facet name="left">
-                                    <h:panelGrid columns="4">
-                                        <ui:remove>
-                                            <p:menuButton id="createListBtn" value="Create listing">
-                                                <p:menuitem value="Single listing" actionListener="#{menuView.save}"
-                                                            update="messages" icon="ui-icon-disk"/>
-                                            </p:menuButton>
-                                            <span class="ui-separator">
-                                                <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                                            </span>
-                                        </ui:remove>
-                                        <!--file upload-->
-                                        <p:fileUpload id="up-fileInp" fileUploadListener="#{proformaFileHandlerBean.uploadProforma}"
-                                                      mode="advanced" multiple="true"
-                                                      onstart="PF('processButton').disable();"
-                                                      oncomplete="PF('processButton').enable();"
-                                                      update="messages" sizeLimit="2097152"
-                                                      fileLimit="300" allowTypes="/(\.|\/)(xls|xlsx)$/"
-                                                      dragDropSupport="true"
-                                                      widgetVar="uploadWV"/>
-                                        <span class="ui-separator">
-                                            <span class="ui-icon ui-icon-grip-dotted-vertical" />
-                                        </span>
-                                    </h:panelGrid>
-                                </f:facet>
-                            </p:toolbar>
-                        </h:form>
-
-                        <h:form id="processProforma">
-                            <p:commandButton value="Process the uploaded files" oncomplete="reload();"
-                                             actionListener="#{proformaFileHandlerBean.processProforma()}"
-                                             onclick="PF('processButton').disable();disableChoosing();PF('pbAjax').start();"
-                                             widgetVar="processButton" />
-                            <p:progressBar widgetVar="pbAjax" ajax="true" value="#{progressBarBean.progress}"
-                                           labelTemplate="{value}%" global="false">
-                                <f:param name="value" value="value"/>
-                            </p:progressBar>
-                        </h:form>
-                    </h:panelGrid>
-
-                    <div class="subcontainers centralpanel">
-
-                        <ui:insert name="productTableForm">
-                            <ui:include src="/control/productTable.xhtml" />
-                        </ui:insert>
-
-                    </div>
-                </div>
-            </ui:define>
-        </ui:decorate>
-    </h:body>
-</html>
+</ui:composition>

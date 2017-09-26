@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+        </f:facet>
+        <title>Inventory Management - Sign up</title>
+    </h:head>
+
+    <h:body styleClass="login-body">
+
+        <div class="login-panel ui-fluid">
+            <div class="ui-g">
+
+                <div class="ui-g-12 logo-container">
+                    <p:graphicImage name="images/logo-black.png" library="itr" styleClass="logo"/>
+                    <p:graphicImage name="images/login/icon-login.png" library="paradise-layout" styleClass="login-icon"/>
+                    <h2>Sign Up</h2>
+                </div>
+
+                <h:form id="signup" prependId="false">
+                    <div class="ui-g-12">
+                        <p:messages globalOnly="false" showDetail="true" showSummary="false"/>
+
+                        <p:tooltip id="toolTipFocus" for="phone" showEvent="focus" hideEvent="blur">
+                            <strong>Examples:</strong>
+                            <p>(734) 555 1212</p>
+                            <p>734 555 1212</p>
+                            <p>734-555-1212</p>
+                            <p>7345551212</p>
+                        </p:tooltip>
+
+                        <h:panelGrid columns="2">
+                            <h:outputLabel for="firstname" value="First name *:"/>
+                            <p:inputText id="firstname" value="#{userSignUp.firstname}" label="First name"
+                                         placeholder="First name" required="true" size="30"/>
+
+                            <h:outputLabel for="lastname" value="Last name *:"/>
+                            <p:inputText id="lastname" value="#{userSignUp.lastname}" label="Last name"
+                                         placeholder="Last name" required="true" size="30"/>
+
+                            <h:outputLabel for="username" value="User name *:"/>
+                            <p:inputText id="username" value="#{userSignUp.username}" label="User name"
+                                         placeholder="User name" required="true" size="30"/>
+
+                            <h:outputLabel for="password" value="Password *:"/>
+                            <p:password id="password" value="#{userSignUp.password}" feedback="true" inline="true"
+                                        placeholder="Password" match="confirmPassword" label="Password"
+                                        required="true" size="30"/>
+                            <h:outputLabel for="confirmPassword" value="Confirm password *:"/>
+                            <p:password id="confirmPassword" value="#{userSignUp.password}"
+                                        placeholder="Confirm password" label="Confirm password"
+                                        required="true" size="30"/>
+
+                            <h:outputLabel for="email" value="Email address *:"/>
+                            <p:inputText id="email" value="#{userSignUp.email}" label="Email address"
+                                         placeholder="Email address" required="true" size="30"/>
+
+                            <h:outputLabel for="phone" value="Phone number *:"/>
+                            <p:inputText id="phone" value="#{userSignUp.phoneNumber}" label="Phone number"
+                                         placeholder="Phone number" required="true" size="30">
+                                <f:validator validatorId="phoneNumberValidator"/>
+                            </p:inputText>
+
+                            <h:outputLabel for="address" value="Address *:"/>
+                            <p:inputTextarea id="address" value="#{userSignUp.address}" label="Address"
+                                             placeholder="Address" required="true" cols="30"/>
+                        </h:panelGrid>
+                    </div>
+
+                    <div class="ui-g-12">
+                        <p:commandButton value="Create Account" action="#{userSignUp.signUpAction()}"
+                                         validateClient="true" update="signup"/>
+
+                        <p style="text-align:center;">
+                            <span>Already have an account? </span>
+                            <h:link value="Sign In" outcome="login"/>
+                        </p>
+                    </div>
+                </h:form>
+
+            </div>
+        </div>
+
+        <h:outputStylesheet name="css/layout-#{guestPreferences.layout}.css" library="paradise-layout"/>
+
+    </h:body>
+</html>

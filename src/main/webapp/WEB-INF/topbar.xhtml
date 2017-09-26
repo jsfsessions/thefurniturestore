@@ -1,0 +1,44 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/paradise">
+
+    <div class="topbar">
+
+        <h:link outcome="/index" styleClass="topbar-logo">
+            <p:graphicImage style="border:0px;" library="itr" name="images/logo-black.png"/>
+        </h:link>
+
+        <a href="#" id="menu-button">
+            <i class="fa fa-bars"></i>
+        </a>
+
+        <a href="#" id="user-display">
+            <span class="username">#{_loggedUser}</span>
+            <p:graphicImage name="images/avatar.png" library="paradise-layout" style="border:0px;"/>
+            <i class="fa fa-angle-down"></i>
+        </a>
+
+        <h:form>
+            <ul id="topbar-menu" class="animated animated">
+                <li role="menuitem">
+                    <h:commandLink action="#{userLogout.logout}">
+                        <i class="fa fa-fw fa-sign-out"></i>
+                        <span>Logout</span>
+                    </h:commandLink>
+                </li>
+                <li role="menuitem">
+                    <p:link outcome="/demo/dashboard?faces-redirect=true">
+                        <i class="fa fa-fw fa-dashboard"></i>
+                        <span>Layout configuration</span>
+                    </p:link>
+                </li>
+            </ul>
+        </h:form>
+
+    </div>
+
+</ui:composition>
