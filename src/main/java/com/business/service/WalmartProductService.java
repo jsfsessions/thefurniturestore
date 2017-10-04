@@ -215,6 +215,11 @@ public class WalmartProductService {
                 case SearchBy.PRODUCT_NAME:
                     cq.select(product).where(cb.equal(product.get("status"), Status.ACTIVE), cb.like(product.get("productName"), pattern));
                     break;
+                //                    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                case SearchBy.DEPARTMENT:
+                    cq.select(product).where(cb.equal(product.get("status"), Status.ACTIVE), cb.like(product.get("department"), pattern));
+                    System.out.println("service side search by department +++++++++++++++++++++++++++++" + filter);
+                    break;
                 default:
                     cq.select(product).where(cb.equal(product.get("status"), Status.ACTIVE),
                             cb.or(cb.like(product.get("category"), pattern),

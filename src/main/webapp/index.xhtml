@@ -13,20 +13,36 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes"/>
         </f:facet>
-        <title><ui:insert name="title">Inventory Management</ui:insert></title>
+        <title><ui:insert name="title">The Furniture Store</ui:insert></title>
+        <!-- +++++++++++++++++++++++++ -->
+        <ui:remove>
+            <link href="https://fonts.googleapis.com/css?family=Pangolin" rel="stylesheet"/> 
+            <link href="https://fonts.googleapis.com/css?family=Pangolin|Permanent+Marker" rel="stylesheet"/>
+            <link href="https://fonts.googleapis.com/css?family=Saira" rel="stylesheet"/>
+            <link href="https://fonts.googleapis.com/css?family=Dancing+Script" rel="stylesheet"/>
+            <link href="https://fonts.googleapis.com/css?family=Nosifer" rel="stylesheet"/>
+        </ui:remove>
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet"/>
+        <h:outputStylesheet name="css/common.css" library="itr"/>
+        <!-- +++++++++++++++++++++++++ -->
         <h:outputScript name="js/nanoscroller.js" library="paradise-layout"/>
         <h:outputScript name="js/layout.js" library="paradise-layout"/>
     </h:head>
 
     <h:body>
-        <div class="layout-wrapper #{guestPreferences.slimMenu ? 'layout-menu-slim' : (guestPreferences.overlayMenu ? 'layout-menu-overlay' : 'layout-menu-static')}">
+        <div class="layout-wrapper #{guestPreferences.slimMenu ? 'layout-menu-slim' : 
+                                     (guestPreferences.overlayMenu ? 'layout-menu-overlay' : 'layout-menu-static')}">
             <div class="topbar">
                 <a href="#" class="topbar-logo">
-                    <p:graphicImage style="border:0px;" library="itr" name="images/logo-black.png"/>
+                    <!-- +++++++++++++++++++++++++ -->
+                    <p:link id="brandname">The Furniture Store</p:link>
+                    <ui:remove>
+                        <p:graphicImage style="border:0px;" library="itr" name="images/logo-black.png"/>  
+                    </ui:remove>
                 </a>
 
                 <h:link id="user-display" outcome="control/scheduled.xhtml">
-                    <span class="username">Inventory Control</span>
+                    <span class="username">Sign in</span> <!-- +++++++++++++++++++++++++ -->
                 </h:link>
             </div>
 
@@ -44,6 +60,22 @@
                                 <p:menuitem value="Search by product name" actionListener="#{publicProductsBean.searchByName}"
                                             update=":navigation"/>
                             </p:splitButton>
+
+                            <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                            <h:panelGrid columns="6">
+                                <p:commandButton class="dept" value="Bedroom" 
+                                                 action="#{publicProductsBean.searchByDepartment('Bedroom')}"/>
+                                <p:commandButton class="dept" value="Entertainment" 
+                                                 action="#{publicProductsBean.searchByDepartment('Entertainment')}"/>
+                                <p:commandButton class="dept" value="Kitchen and Dining" 
+                                                 action="#{publicProductsBean.searchByDepartment('Kitchen &amp; Dining')}"/>
+                                <p:commandButton class="dept" value="Living room" 
+                                                 action="#{publicProductsBean.searchByDepartment('Living room')}"/>
+                                <p:commandButton class="dept" value="Office" 
+                                                 action="#{publicProductsBean.searchByDepartment('Office')}"/>
+                                <p:commandButton class="dept" value="Patio and garden" 
+                                                 action="#{publicProductsBean.searchByDepartment('Patio &amp; garden')}"/>
+                            </h:panelGrid>
                         </h:form>
                     </div>
 
@@ -101,7 +133,8 @@
             .layout-wrapper.layout-menu-static .layout-footer { margin-left:0; }
             .card > img { margin:0 auto; display:block; }
             #search, .ui-inputfield { width:80%;margin:0 auto; }
+             /*+++++++++++++++++++++++++*/  
+            .dept {margin: 15px 0px 0px 15px; text-align: center;}
         </style>
-
     </h:body>
 </html>

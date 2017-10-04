@@ -73,6 +73,17 @@ public class PublicProductsBean implements Serializable {
         findProducts();
     }
 
+    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+    public void searchByDepartment(String searchText) {
+        page = 0;
+        filter = SearchBy.DEPARTMENT;
+        findProductsByDepartment(searchText);
+    }
+
+    public void findProductsByDepartment(String searchText) {
+        products = walmartProductService.findAllActive(0, pageSize, filter, searchText);
+    }
+
     public void searchByCategory(ActionEvent actionEvent) {
         page = 0;
         filter = SearchBy.CATEGORY;

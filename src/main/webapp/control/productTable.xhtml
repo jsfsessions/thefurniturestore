@@ -8,7 +8,8 @@
 
     <h:form id="productTableForm">
         <div class="card">
-            <p:commandButton id="tableDataOnFirstLoad" action="scheduled?faces-redirect=true" style="visibility:hidden;float:left;width:0;height:0;"/>
+            <p:commandButton id="tableDataOnFirstLoad" action="scheduled?faces-redirect=true" 
+                             style="visibility:hidden;float:left;width:0;height:0;"/>
             <p:commandButton id="submitBtn" style="visibility:hidden;float:left;width:0;height:0;"/>
 
             <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable"
@@ -17,7 +18,8 @@
                          filteredValue="#{walmartProductBean.filteredWalmartProducts}" filterDelay="500"
                          paginator="true" rows="20" rowsPerPageTemplate="20,40,60"
                          paginatorAlwaysVisible="false" paginatorPosition="bottom"
-                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} 
+                         {NextPageLink} {LastPageLink}">
 
                 <p:ajax event="rowEditInit" listener="#{walmartProductBean.onRowEditInit}"/>
                 <p:ajax event="rowEdit" listener="#{walmartProductBean.onRowEdit}" update=":menuform"/>
@@ -68,12 +70,22 @@
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
-
                 <p:column headerText="Category" filterBy="#{product.category}"
                           sortBy="#{product.category}" filterMatchMode="contains">
                     <h:outputText value="#{product.category}" />
                 </p:column>
-
+                <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                <p:column headerText="Department" filterBy="#{product.department}"
+                          sortBy="#{product.department}" filterMatchMode="contains">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{product.department}" />
+                        </f:facet>
+                        <f:facet name="input">
+                           <p:inputTextarea value="#{product.department}" cols="15" rows="6"/> 
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
                 <p:column headerText="Bin" filterBy="#{product.binLocation}" sortBy="#{product.binLocation}"
                           filterMatchMode="contains" style="width:9%">
                     <p:cellEditor>

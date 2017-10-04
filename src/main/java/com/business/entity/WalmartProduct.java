@@ -3,6 +3,7 @@ package com.business.entity;
 import com.business.parser.model.Selectable;
 import com.business.parser.model.Selector;
 import com.business.parser.model.WalmartImage;
+import com.util.constants.Department;
 import com.util.constants.Status;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -425,7 +426,16 @@ public class WalmartProduct implements Selectable, Serializable {
     }
 
     public void setDepartment(String department) {
-        this.department = department;
+        String[] categArray;
+//                                ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        if (category != null) {
+            categArray = ((category.replaceAll(" Furniture", "")).replaceAll("//", "/")).split("/");
+            for (String cat : categArray) {
+                if (Department.DEPARTMENT.contains(cat)) {
+                    this.department = cat;
+                }
+            }
+        }
     }
 
     public void setDataSource(String dataSource) {

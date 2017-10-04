@@ -8,8 +8,15 @@
 
     <div class="topbar">
 
+        <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet"/>
+        <h:outputStylesheet name="css/common.css" library="itr"/>
+
         <h:link outcome="/index" styleClass="topbar-logo">
-            <p:graphicImage style="border:0px;" library="itr" name="images/logo-black.png"/>
+            <!-- ++++++++++++++++++++++++++++++++ -->
+            <ui:remove>
+                <p:graphicImage style="border:0px;" library="itr" name="images/logo-black.png"/>
+            </ui:remove>
+            <p:link id="brandname">The Furniture Store</p:link>
         </h:link>
 
         <a href="#" id="menu-button">

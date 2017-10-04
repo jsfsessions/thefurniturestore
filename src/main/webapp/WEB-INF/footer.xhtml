@@ -7,13 +7,20 @@
 
     <div class="layout-footer clearfix">
 
-        <p:graphicImage library="itr" name="images/logo-black.png"/>
+        <!-- ++++++++++++++++++++++++++++++++ -->
+        <ui:remove>
+            <p:graphicImage library="itr" name="images/logo-black.png"/>
+        </ui:remove>
 
         <div class="layout-footer-right">
-            <h:outputText value="&#169; 20#{now.year - 100} Inventory Turnover Ratio">
+            <!-- ++++++++++++++++++++++++++++++++ -->
+            <span style="margin-right: 10px;">
+                The Furniture Store &#169;
+            </span>
+            <!-- ++++++++++++++++++++++++++++++++ -->
+            <h:outputText value="20#{now.year - 100}">
                 <f:convertDateTime pattern="MM/dd/yyyy" type="date" />
             </h:outputText>
-            <a href="http://www.investopedia.com/terms/a/assetturnover.asp">About</a>
         </div>
 
     </div>
