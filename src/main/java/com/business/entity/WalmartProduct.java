@@ -426,16 +426,7 @@ public class WalmartProduct implements Selectable, Serializable {
     }
 
     public void setDepartment(String department) {
-        String[] categArray;
-//                                ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        if (category != null) {
-            categArray = ((category.replaceAll(" Furniture", "")).replaceAll("//", "/")).split("/");
-            for (String cat : categArray) {
-                if (Department.DEPARTMENT.contains(cat)) {
-                    this.department = cat;
-                }
-            }
-        }
+        this.department = department;
     }
 
     public void setDataSource(String dataSource) {

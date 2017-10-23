@@ -61,6 +61,7 @@ public class WalmartProductBean implements Serializable {
     private List<String> galeria;
     private List<Zipcode> zipcodes;
     private List<Employee> selectedEmployees;
+    private WalmartProduct newWalmartProduct;
     private WalmartProduct selectedWalmartProduct;
     private LazyDataModel<WalmartProduct> lazyModel;
     private List<WalmartProduct> selectedWalmartProducts;
@@ -70,6 +71,7 @@ public class WalmartProductBean implements Serializable {
     public void init() {
         galeria = new ArrayList<>();
         selectedEmployees = new ArrayList<>();
+        newWalmartProduct = new WalmartProduct();
         selectedWalmartProducts = new ArrayList<>();
         filteredWalmartProducts = new ArrayList<>();
         zipcodes = zipcodeService.populate();
@@ -101,6 +103,14 @@ public class WalmartProductBean implements Serializable {
                 return filteredWalmartProducts;
             }
         };
+    }
+
+    public WalmartProduct getNewWalmartProduct() {
+        return newWalmartProduct;
+    }
+
+    public void setNewWalmartProduct(WalmartProduct newWalmartProduct) {
+        this.newWalmartProduct = newWalmartProduct;
     }
 
     public Status getStatus() {
@@ -285,5 +295,13 @@ public class WalmartProductBean implements Serializable {
             selectedEmployees = new ArrayList<>();
             employeesBean.setEmployees(null);
         }
+    }
+
+    public void addProduct() {
+        walmartProductService.addProduct(newWalmartProduct);
+        RequestContext.getCurrentInstance().execute("PF('addProductDialog').hide()");
+        Faces.getContext().addMessage(null, new FacesMessage("Product successfully saved.."));
+        
+        newWalmartProduct = new WalmartProduct();
     }
 }

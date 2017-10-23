@@ -8,17 +8,17 @@
 
     <h:form id="productTableForm">
         <div class="card">
-            <p:commandButton id="tableDataOnFirstLoad" action="scheduled?faces-redirect=true" 
+            <p:commandButton id="tableDataOnFirstLoad" action="scheduled?faces-redirect=true"
                              style="visibility:hidden;float:left;width:0;height:0;"/>
             <p:commandButton id="submitBtn" style="visibility:hidden;float:left;width:0;height:0;"/>
 
-            <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable"
+            <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable" stickyHeader="true"
                          value="#{walmartProductBean.lazyModel}" editable="true" lazy="true" rowKey="#{product.id}"
                          selection="#{walmartProductBean.selectedWalmartProducts}" rowSelectMode="checkbox"
                          filteredValue="#{walmartProductBean.filteredWalmartProducts}" filterDelay="500"
                          paginator="true" rows="20" rowsPerPageTemplate="20,40,60"
                          paginatorAlwaysVisible="false" paginatorPosition="bottom"
-                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} 
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport}
                          {NextPageLink} {LastPageLink}">
 
                 <p:ajax event="rowEditInit" listener="#{walmartProductBean.onRowEditInit}"/>
@@ -54,7 +54,7 @@
                             <h:outputText value="#{product.upc}"/>
                         </f:facet>
                         <f:facet name="input">
-                            <p:inputText value="#{product.upc}"/>
+                            <p:inputText value="#{product.upc}" required="true" requiredMessage="UPC is a required field."/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -82,7 +82,7 @@
                             <h:outputText value="#{product.department}" />
                         </f:facet>
                         <f:facet name="input">
-                           <p:inputTextarea value="#{product.department}" cols="15" rows="6"/> 
+                            <p:inputTextarea value="#{product.department}" cols="15" rows="6"/>
                         </f:facet>
                     </p:cellEditor>
                 </p:column>
@@ -90,29 +90,37 @@
                           filterMatchMode="contains" style="width:9%">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.binLocation}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{product.binLocation}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.binLocation}" required="true" requiredMessage="Bin is a required field."/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
                 <p:column headerText="Quantity" sortBy="#{product.totalQty}" filterMatchMode="contains" style="width:5%">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.totalQty}" /></f:facet>
-                        <f:facet name="input"><p:inputText value="#{product.totalQty}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{product.totalQty}" required="true" requiredMessage="Quantity is a required field."/></f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Price" sortBy="#{product.salePrice}" filterMatchMode="contains" style="width:5%">
+                <p:column headerText="Retail Price" sortBy="#{product.retailPrice}" filterMatchMode="contains" style="width:4%">
+                    <h:outputText value="$ #{product.retailPrice}">
+                        <f:convertNumber type="currency"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Discounted Price" sortBy="#{product.salePrice}" filterMatchMode="contains" style="width:4%">
                     <p:cellEditor>
                         <f:facet name="output">
                             <h:outputText value="$ #{product.salePrice}">
                                 <f:convertNumber type="currency"/>
                             </h:outputText>
                         </f:facet>
-                        <f:facet name="input"><p:inputText value="#{product.salePrice}"/></f:facet>
+                        <f:facet name="input">
+                            <p:inputText value="#{product.salePrice}" required="true" requiredMessage="Discounted Price is a required field."/>
+                        </f:facet>
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Color" sortBy="#{product.color}" filterMatchMode="exact" style="width:5%">
+                <p:column headerText="Color" sortBy="#{product.color}" filterMatchMode="exact" style="width:4%">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{product.color}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{product.color}"/></f:facet>
@@ -131,7 +139,7 @@
                     </p:cellEditor>
                 </p:column>
 
-                <p:column headerText="Store" sortBy="#{product.store}" style="width:5%">
+                <p:column headerText="Store" sortBy="#{product.store}" style="width:4%">
                     <h:outputText value="#{product.store}" />
                 </p:column>
 

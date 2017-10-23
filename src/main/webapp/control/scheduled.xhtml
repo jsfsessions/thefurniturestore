@@ -55,12 +55,67 @@
                         <f:param name="value" value="value"/>
                     </p:progressBar>
                 </h:form>
+                <h:form>
+                    <p:commandButton type="button" value="Add Product" onclick="PF('addProductDialog').show()"/>
+                </h:form>
             </h:panelGrid>
         </div>
 
         <ui:insert name="productTableForm">
             <ui:include src="/control/productTable.xhtml" />
         </ui:insert>
+
+        <p:dialog id="addProductDialog" widgetVar="addProductDialog" position="center" modal="true"
+                  header="Add new product.." responsive="true">
+            <div class="ui-g-12">
+                <h:form id="addProductForm" enctype="multipart/form-data">
+                    <h:panelGrid columns="2">
+                        <h:outputLabel for="image" value="Image URL:"/>
+                        <p:inputText id="image" value="#{walmartProductBean.newWalmartProduct.imgUrl}"
+                                     placeholder="http://.../image.jpg"/>
+
+                        <h:outputLabel for="upc" value="UPC *:"/>
+                        <p:inputText id="upc" value="#{walmartProductBean.newWalmartProduct.upc}"
+                                     required="true" requiredMessage="UPC is a required field."/>
+
+                        <h:outputLabel for="name" value="Product name *:"/>
+                        <p:inputTextarea id="name" value="#{walmartProductBean.newWalmartProduct.productName}" cols="20" rows="2"
+                                         required="true" requiredMessage="Product name is a required field."/>
+
+                        <h:outputLabel for="category" value="Category *:"/>
+                        <p:inputTextarea id="category" value="#{walmartProductBean.newWalmartProduct.category}" cols="20" rows="2"
+                                         required="true" requiredMessage="Category is a required field."/>
+
+                        <h:outputLabel for="department" value="Department *:"/>
+                        <p:inputTextarea id="department" value="#{walmartProductBean.newWalmartProduct.department}" cols="20" rows="2"
+                                         required="true" requiredMessage="Department is a required field."/>
+
+                        <h:outputLabel for="bin" value="Bin *:"/>
+                        <p:inputText id="bin" value="#{walmartProductBean.newWalmartProduct.binLocation}"
+                                     required="true" requiredMessage="Bin is a required field."/>
+
+                        <h:outputLabel for="quantity" value="Quantity *:"/>
+                        <p:inputNumber id="quantity" value="#{walmartProductBean.newWalmartProduct.totalQty}"
+                                       required="true" requiredMessage="Quantity is a required field."/>
+
+                        <h:outputLabel for="retailPrice" value="Retail Price *:"/>
+                        <p:inputNumber id="retailPrice" value="#{walmartProductBean.newWalmartProduct.retailPrice}"
+                                       required="true" requiredMessage="Retail Price is a required field."/>
+
+                        <h:outputLabel for="discountedPrice" value="Discounted Price *:"/>
+                        <p:inputNumber id="discountedPrice" value="#{walmartProductBean.newWalmartProduct.salePrice}"
+                                       required="true" requiredMessage="Discounted Price is a required field."/>
+
+                        <h:outputLabel for="color" value="Color *:"/>
+                        <p:inputText id="color" value="#{walmartProductBean.newWalmartProduct.color}"
+                                     required="true" requiredMessage="Color is a required field."/>
+
+                        <p:commandButton value="Save Product" action="#{walmartProductBean.addProduct()}"
+                                         update="@form :productTableForm"/>
+                    </h:panelGrid>
+                </h:form>
+            </div>
+        </p:dialog>
 
         <script>
             function disableChoosing() {
