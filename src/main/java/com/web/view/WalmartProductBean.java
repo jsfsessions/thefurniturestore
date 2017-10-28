@@ -65,7 +65,6 @@ public class WalmartProductBean implements Serializable {
     private WalmartProduct selectedWalmartProduct;
     private LazyDataModel<WalmartProduct> lazyModel;
     private List<WalmartProduct> selectedWalmartProducts;
-    private List<WalmartProduct> filteredWalmartProducts;
 
     @PostConstruct
     public void init() {
@@ -73,7 +72,6 @@ public class WalmartProductBean implements Serializable {
         selectedEmployees = new ArrayList<>();
         newWalmartProduct = new WalmartProduct();
         selectedWalmartProducts = new ArrayList<>();
-        filteredWalmartProducts = new ArrayList<>();
         zipcodes = zipcodeService.populate();
 
         final String viewName = Faces.getViewName().toUpperCase();   // Use page name as filter to select only products with status = page name
@@ -81,9 +79,11 @@ public class WalmartProductBean implements Serializable {
         this.lazyModel = new LazyDataModel<WalmartProduct>() {
             private static final long serialVersionUID = 1L;
 
+            private List<WalmartProduct> datasource;
+
             @Override
             public WalmartProduct getRowData(String rowKey) {
-                for (WalmartProduct product : lazyModel) {
+                for (WalmartProduct product : datasource) {
                     if (rowKey.equals(product.getId().toString())) {
                         return product;
                     }
@@ -98,9 +98,9 @@ public class WalmartProductBean implements Serializable {
 
             @Override
             public List<WalmartProduct> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-                filteredWalmartProducts = walmartProductService.findPage(first, pageSize, viewName, sortField, sortOrder, filters);
-                lazyModel.setRowCount(walmartProductService.findPage(-1, -1, viewName, null, null, filters).size());
-                return filteredWalmartProducts;
+                datasource = walmartProductService.findPage(first, pageSize, viewName, sortField, sortOrder, filters);
+                lazyModel.setRowCount(walmartProductService.findPage(-1, -1, viewName, sortField, sortOrder, filters).size());
+                return datasource;
             }
         };
     }
@@ -127,14 +127,6 @@ public class WalmartProductBean implements Serializable {
 
     public LazyDataModel<WalmartProduct> getLazyModel() {
         return lazyModel;
-    }
-
-    public List<WalmartProduct> getFilteredWalmartProducts() {
-        return filteredWalmartProducts;
-    }
-
-    public void setFilteredWalmartProducts(List<WalmartProduct> filteredWalmartProducts) {
-        this.filteredWalmartProducts = filteredWalmartProducts;
     }
 
     public String getSoldBy() {
@@ -301,7 +293,7 @@ public class WalmartProductBean implements Serializable {
         walmartProductService.addProduct(newWalmartProduct);
         RequestContext.getCurrentInstance().execute("PF('addProductDialog').hide()");
         Faces.getContext().addMessage(null, new FacesMessage("Product successfully saved.."));
-        
+
         newWalmartProduct = new WalmartProduct();
     }
 }

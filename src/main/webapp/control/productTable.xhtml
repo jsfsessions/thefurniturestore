@@ -12,12 +12,11 @@
                              style="visibility:hidden;float:left;width:0;height:0;"/>
             <p:commandButton id="submitBtn" style="visibility:hidden;float:left;width:0;height:0;"/>
 
-            <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable" stickyHeader="true"
+            <p:dataTable id="mul-sel-dat" var="product" widgetVar="productTable"
                          value="#{walmartProductBean.lazyModel}" editable="true" lazy="true" rowKey="#{product.id}"
                          selection="#{walmartProductBean.selectedWalmartProducts}" rowSelectMode="checkbox"
-                         filteredValue="#{walmartProductBean.filteredWalmartProducts}" filterDelay="500"
-                         paginator="true" rows="20" rowsPerPageTemplate="20,40,60"
-                         paginatorAlwaysVisible="false" paginatorPosition="bottom"
+                         filterDelay="700" paginator="true" rows="20" rowsPerPageTemplate="20,40,60"
+                         paginatorAlwaysVisible="false" paginatorPosition="bottom" reflow="true"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport}
                          {NextPageLink} {LastPageLink}">
 
@@ -25,17 +24,16 @@
                 <p:ajax event="rowEdit" listener="#{walmartProductBean.onRowEdit}" update=":menuform"/>
 
                 <f:facet name="header">
-                    <p:outputPanel>
-                        <h:outputText value="Search all fields:" />
-                        <p:inputText id="globalFilter" onkeyup="PF('productTable').filter()"
-                                     placeholder="Enter keyword"/>
-                        <p:commandButton id="togbtn" type="button" value="Columns" icon="ui-icon-calculator"/>
-                    </p:outputPanel>
+                    <h:outputText value="Search all fields:" />
+                    <p:inputText id="globalFilter" onkeyup="PF('productTable').filter()" placeholder="Not implemented yet.."/>
+                    <!-- GLOBAL TABLE FILTER NOT IMPLEMENTED YET, LET ME KNOW IF YOU NEED IT -->
+                    <p:commandButton id="togbtn" type="button" value="Columns" icon="ui-icon-calculator"/>
+                    <p:columnToggler datasource="mul-sel-dat" trigger="togbtn"/>
                 </f:facet>
 
-                <p:column selectionMode="multiple" style="width:18px"/>
+                <p:column selectionMode="multiple" style="width:18px" toggleable="false"/>
 
-                <p:column style="width:16px">
+                <p:column style="width:16px" toggleable="false">
                     <p:rowToggler />
                 </p:column>
 
@@ -143,7 +141,7 @@
                     <h:outputText value="#{product.store}" />
                 </p:column>
 
-                <p:column style="width:32px" rendered="#{request.isUserInRole('adminRole')}">
+                <p:column headerText="Edit" style="width:32px" rendered="#{request.isUserInRole('adminRole')}">
                     <p:rowEditor/>
                 </p:column>
 

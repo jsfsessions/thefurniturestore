@@ -130,7 +130,7 @@ public class WalmartProductService {
                 if (sortOrder.equals(SortOrder.ASCENDING)) {
                     cq.orderBy(cb.asc(product.get(sortField)));
                 } else if (sortOrder.equals(SortOrder.DESCENDING)) {
-                    cq.orderBy(cb.asc(product.get(sortField)));
+                    cq.orderBy(cb.desc(product.get(sortField)));
                 }
             } else {
                 cq.orderBy(cb.asc(product.get("id")));
@@ -151,13 +151,12 @@ public class WalmartProductService {
                 }
             }
         }
-        cq.where(filterCondition);
 
         if (status == null) {
             // Find ACTIVE and SOLD for user roles
-            cq.where(cb.or(cb.equal(product.get("status"), Status.ACTIVE), cb.equal(product.get("status"), Status.SOLD)));
+            cq.where(filterCondition, cb.or(cb.equal(product.get("status"), Status.ACTIVE), cb.equal(product.get("status"), Status.SOLD)));
         } else {
-            cq.where(cb.equal(product.get("status"), status));
+            cq.where(filterCondition, cb.equal(product.get("status"), status));
         }
 
         //pagination
